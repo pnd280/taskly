@@ -1,0 +1,47 @@
+Table Task {
+  id text [pk]
+  title text
+  rich_description text [note: 'JSON/MD format']
+  createdAt datetime
+  beginAt datetime
+  endAt datetime
+  repeat boolean [default: false]
+  priority int [default: 4]
+  isCompleted boolean [default: false]
+  projectId text [ref: > Project.id]
+  isVisible boolean [default: true]
+} 
+
+Table Project {
+  id text [pk]
+  title text
+  description text
+  createdAt datetime
+  isVisible boolean [default: true]
+}
+
+Table Tag {
+  id text [pk]
+  title text
+  color text [note: 'Hexadecimal format']
+  isVisible boolean [default: true]
+}
+
+Table TaggedTask {
+  taskId text [ref: - Task.id]
+  tagId text [ref: - Tag.id]
+}
+
+Table RepeatedTask {
+  id text [pk]
+  taskId text [ref: - Task.id]
+  interval int
+  weekDay text [note: 'An array, weekdays separated by comma']
+  nextDueDate datetime [note: 'When the task is completed, update this field']
+}
+
+Table Reminder {
+  id text [pk]
+  taskId text [ref: - Task.id]
+  time datetime
+}
