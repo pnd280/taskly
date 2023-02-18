@@ -66,22 +66,35 @@ class RootPageState extends State<RootPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+
+        toolbarHeight: 80,
         title: Text(
+          key: Key('page-$currentNavPage'),
           appBarTitles[currentNavPage],
           style: const TextStyle(
             fontWeight: FontWeight.w600,
-            color: TasklyColor.blackText,
           ),
         ),
-        backgroundColor: Colors.white,
-        elevation: 0,
+        backgroundColor: Theme.of(context).primaryColor,
+        elevation: 10,
+        actions: [
+          AnimatedSwitcher(
+              duration: const Duration(milliseconds: 100),
+              child: [0, 1].contains(currentNavPage)
+                  ? IconButton(
+                      splashRadius: 20,
+                      icon: const Icon(
+                        CupertinoIcons.search,
+                      ),
+                      onPressed: () {},
+                    )
+                  : null),
+        ],
       ),
       body: pages[currentNavPage],
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: [0, 1].contains(currentNavPage)
           ? FloatingActionButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(11)),
               onPressed: () {},
               child: const Icon(
                 CupertinoIcons.add,
