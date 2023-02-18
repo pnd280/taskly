@@ -10,9 +10,26 @@ class TaskOverallViewPage extends StatefulWidget {
 class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(child: Text('Task overall view')),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              width: double.infinity,
+              height: 70,
+              child: Placeholder(),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Placeholder(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
