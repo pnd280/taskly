@@ -1,19 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:taskly/widgets/tag.dart';
-
-final List dummyTags = [
-  'All',
-  'In Progress',
-  'Completed',
-  'Todo',
-];
-final List<String> dummyUserTags = <String>[
-  'Custom tags',
-  'Personal',
-  'Work',
-  'Shopping'
-];
+import 'package:taskly/miscs/dummies.dart';
 
 class TaskOverallViewPage extends StatefulWidget {
   const TaskOverallViewPage({super.key});

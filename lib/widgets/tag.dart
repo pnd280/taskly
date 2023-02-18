@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-Widget Tag(String title, Color primaryColor, int index, setState, [bool isSelected = false]) {
+Widget Tag(String title, Color primaryColor, int index, setState,
+    [bool isSelected = false]) {
   return InkWell(
     borderRadius: BorderRadius.circular(11),
     onTap: () {
@@ -16,6 +17,7 @@ Widget Tag(String title, Color primaryColor, int index, setState, [bool isSelect
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Text(
+            // key: Key('tag-${isSelected ? 'selected' : 'unselected'}'),
             title,
             style: isSelected
                 ? const TextStyle(
