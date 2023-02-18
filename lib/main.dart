@@ -31,12 +31,22 @@ class RootPage extends StatefulWidget {
 }
 
 class RootPageState extends State<RootPage> {
+  int currentNavPage = 0;
+
+  List<Widget> pages = [
+    TaskOverallViewPage(),
+    CalendarViewPage(),
+    SettingsPage(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: pages[currentNavPage],
       bottomNavigationBar: Container(
         height: 80,
         child: BottomNavigationBar(
+          currentIndex: currentNavPage,
           selectedLabelStyle: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -45,6 +55,11 @@ class RootPageState extends State<RootPage> {
             BottomNavigationBarItem(icon: Icon(Icons.calendar_month_outlined), label: 'Calendar'),
             BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
           ],
+          onTap: (int index) {
+            setState(() {
+              currentNavPage = index;
+            });
+          },
         ),
       ),
     );
