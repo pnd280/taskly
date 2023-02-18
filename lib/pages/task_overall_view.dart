@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:taskly/widgets/tag.dart';
 import 'package:taskly/miscs/dummies.dart';
 import 'package:taskly/widgets/task_card.dart';
-
+import 'package:intl/intl.dart';
 import '../miscs/colors.dart';
 
 class TaskOverallViewPage extends StatefulWidget {
@@ -52,13 +52,16 @@ class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
             ),
           ),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListView.builder(
-                  itemCount: dummyTasks.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return TaskCard(dummyTasks[index], primaryColor);
-                  }),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TaskCluster('wqr', dummyTasks, primaryColor),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

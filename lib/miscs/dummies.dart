@@ -78,6 +78,7 @@ final List<Map<String, dynamic>> dummyTasks = [
     'projectId': 'work',
     'isVisible': true,
   },
+  
 ];
 
 final List dummyTags = [

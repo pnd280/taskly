@@ -1,6 +1,35 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:taskly/miscs/styles.dart';
+import 'package:intl/intl.dart';
+
+Widget TaskCluster(String dateTime, List<Map> tasks, Color borderColor) {
+  return ListView(
+    // clipBehavior: Clip.none,
+    children: [
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          DateFormat("EEE, MMM d").format(DateTime.now()),
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      Column(
+        children: (tasks.map((e) => TaskCard(e, borderColor)).toList()),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          DateFormat("EEE, MMM d").format(DateTime.now().add(const Duration(hours: 24))),
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      Column(
+        children: (tasks.map((e) => TaskCard(e, borderColor)).toList()),
+      )
+    ],
+  );
+}
 
 Widget TaskCard(Map task, Color borderColor) {
   return Padding(
@@ -10,9 +39,9 @@ Widget TaskCard(Map task, Color borderColor) {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(11),
-        boxShadow: const [
-          TasklyStyle.shadow,
-        ],
+        // boxShadow: const [
+        //   TasklyStyle.shadow,
+        // ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
