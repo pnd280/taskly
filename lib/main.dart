@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:taskly/miscs/styles.dart';
 import 'package:taskly/pages/calendar_view.dart';
 import 'package:taskly/pages/settings.dart';
 import 'package:taskly/pages/task_overall_view.dart';
@@ -66,7 +67,6 @@ class RootPageState extends State<RootPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
         toolbarHeight: 80,
         title: Text(
           key: Key('page-$currentNavPage'),
@@ -94,40 +94,54 @@ class RootPageState extends State<RootPage> {
       body: pages[currentNavPage],
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: [0, 1].contains(currentNavPage)
-          ? FloatingActionButton(
-              onPressed: () {},
-              child: const Icon(
-                CupertinoIcons.add,
-                size: 30,
+          ? Container(
+              decoration: BoxDecoration(
+                boxShadow: const [
+                  TasklyStyle.shadow,
+                ],
+                borderRadius: BorderRadius.circular(999),
+              ),
+              child: FloatingActionButton(
+                onPressed: () {},
+                child: const Icon(
+                  CupertinoIcons.add,
+                  size: 30,
+                ),
               ),
             )
           : null,
       bottomNavigationBar: SizedBox(
         height: 80,
-        child: BottomNavigationBar(
-          currentIndex: currentNavPage,
-          selectedLabelStyle: const TextStyle(
-            fontWeight: FontWeight.bold,
+        child: Container(
+          decoration: const BoxDecoration(boxShadow: [
+            TasklyStyle.shadow,
+          ]),
+          child: BottomNavigationBar(
+            elevation: 0,
+            currentIndex: currentNavPage,
+            selectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.checkmark_circle),
+                label: 'Task',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.calendar),
+                label: 'Calendar',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.settings),
+                label: 'Settings',
+              ),
+            ],
+            onTap: (int index) {
+              setState(() {
+                currentNavPage = index;
+              });
+            },
           ),
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.checkmark_circle),
-              label: 'Task',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.calendar),
-              label: 'Calendar',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-          ],
-          onTap: (int index) {
-            setState(() {
-              currentNavPage = index;
-            });
-          },
         ),
       ),
     );
