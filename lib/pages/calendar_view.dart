@@ -11,6 +11,7 @@ class _CalendarViewPageState extends State<CalendarViewPage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
+      backgroundColor: Colors.white,
       body: Center(child: Text('Calendar view')),
     );
   }

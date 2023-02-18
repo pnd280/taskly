@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:taskly/pages/calendar_view.dart';
 import 'package:taskly/pages/settings.dart';
 import 'package:taskly/pages/task_overall_view.dart';
+import 'package:taskly/miscs/colors.dart';
 
 void main() {
   runApp(const MainApp());
@@ -19,6 +20,20 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Inter',
         primarySwatch: Colors.purple,
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: TasklyColor.blackText),
+          bodyMedium: TextStyle(color: TasklyColor.blackText),
+          displayLarge: TextStyle(color: TasklyColor.blackText),
+          displayMedium: TextStyle(color: TasklyColor.blackText),
+          displaySmall: TextStyle(color: TasklyColor.blackText),
+          headlineMedium: TextStyle(color: TasklyColor.blackText),
+          headlineSmall: TextStyle(color: TasklyColor.blackText),
+          titleLarge: TextStyle(color: TasklyColor.blackText),
+          titleMedium: TextStyle(color: TasklyColor.blackText),
+          titleSmall: TextStyle(color: TasklyColor.blackText),
+          bodySmall: TextStyle(color: TasklyColor.blackText),
+          labelSmall: TextStyle(color: TasklyColor.blackText),
+        ),
       ),
       home: const RootPage(),
     );
@@ -41,21 +56,39 @@ class RootPageState extends State<RootPage> {
     SettingsPage(),
   ];
 
+  List<String> appBarTitles = [
+    'Inbox',
+    'Calendar',
+    'Settings',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          appBarTitles[currentNavPage],
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            color: TasklyColor.blackText,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: pages[currentNavPage],
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: currentNavPage != 2
+      floatingActionButton: [0, 1].contains(currentNavPage)
           ? FloatingActionButton(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(11)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(11)),
               onPressed: () {},
               child: const Icon(
                 CupertinoIcons.add,
                 size: 30,
               ),
             )
-          : Container(),
+          : null,
       bottomNavigationBar: SizedBox(
         height: 80,
         child: BottomNavigationBar(
@@ -64,11 +97,18 @@ class RootPageState extends State<RootPage> {
             fontWeight: FontWeight.bold,
           ),
           items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.task_alt), label: 'Task'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.calendar_month_outlined), label: 'Calendar'),
+              icon: Icon(CupertinoIcons.checkmark_circle),
+              label: 'Task',
+            ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.settings), label: 'Settings'),
+              icon: Icon(CupertinoIcons.calendar),
+              label: 'Calendar',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
           ],
           onTap: (int index) {
             setState(() {
