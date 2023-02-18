@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:taskly/miscs/colors.dart';
 
+import '../miscs/styles.dart';
+
+// TODO: refactor to class widget
 Widget Tag(String title, Color primaryColor, int index, setState,
     [bool isSelected = false]) {
   return InkWell(
@@ -13,6 +17,7 @@ Widget Tag(String title, Color primaryColor, int index, setState,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(11),
           color: isSelected ? primaryColor : Colors.grey.withOpacity(.2),
+          border: Border.all(color: TasklyColor.blackText.withOpacity(.1)),
         ),
         child: Padding(
           padding: const EdgeInsets.all(10.0),

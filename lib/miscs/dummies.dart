@@ -1,9 +1,23 @@
-final List<Map<String, dynamic>> tasks = [
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+
+DateTime generateRandomTime() {
+  final random = Random();
+  final now = DateTime.now();
+
+  final hours =
+      random.nextInt(11) - 5; // Generates a random number between -5 and 5
+  final time = now.add(Duration(hours: hours));
+  return time;
+}
+
+final List<Map<String, dynamic>> dummyTasks = [
   {
     'id': 1,
     'title': 'Complete math assignment',
     'rich_description': 'Finish the calculus problem set by Friday',
-    'createdAt': DateTime.now(),
+    'createdAt': generateRandomTime(),
     'beginAt': null,
     'endAt': DateTime(2023, 02, 25, 17, 0),
     'repeat': false,
@@ -16,7 +30,7 @@ final List<Map<String, dynamic>> tasks = [
     'id': 2,
     'title': 'Go for a run',
     'rich_description': 'Jog for 30 minutes around the park',
-    'createdAt': DateTime.now(),
+    'createdAt': generateRandomTime(),
     'beginAt': null,
     'endAt': null,
     'repeat': true,
@@ -29,7 +43,7 @@ final List<Map<String, dynamic>> tasks = [
     'id': 3,
     'title': 'Buy a birthday present',
     'rich_description': 'Purchase a gift for my friend\'s birthday',
-    'createdAt': DateTime.now(),
+    'createdAt': generateRandomTime(),
     'beginAt': null,
     'endAt': DateTime(2023, 02, 19, 20, 0),
     'repeat': false,
@@ -42,7 +56,7 @@ final List<Map<String, dynamic>> tasks = [
     'id': 4,
     'title': 'Schedule dentist appointment',
     'rich_description': 'Book a check-up with my dentist',
-    'createdAt': DateTime.now(),
+    'createdAt': generateRandomTime(),
     'beginAt': null,
     'endAt': null,
     'repeat': false,
@@ -55,7 +69,7 @@ final List<Map<String, dynamic>> tasks = [
     'id': 5,
     'title': 'Submit project proposal',
     'rich_description': 'Send the project proposal to the client',
-    'createdAt': DateTime.now(),
+    'createdAt': generateRandomTime(),
     'beginAt': null,
     'endAt': DateTime(2023, 02, 22, 14, 0),
     'repeat': false,
