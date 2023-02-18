@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 Widget Tag(String title, Color primaryColor, int index, setState, [bool isSelected = false]) {
   return InkWell(
+    borderRadius: BorderRadius.circular(11),
     onTap: () {
       setState(index);
     },
