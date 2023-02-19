@@ -75,7 +75,7 @@ class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
         border: Border.all(color: TasklyColor.blackText.withOpacity(.1)),
         borderRadius: BorderRadius.circular(11),
         color:
-            (currentChosenTag < 0) ? primaryColor : Colors.grey.withOpacity(.2),
+            (currentChosenTag < 0) ? primaryColor : Colors.grey.shade300.withOpacity(.2),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(

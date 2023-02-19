@@ -20,7 +20,8 @@ Widget TaskCluster(String dateTime, List<Map> tasks, Color borderColor) {
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(
-          DateFormat("EEE, MMM d").format(DateTime.now().add(const Duration(hours: 24))),
+          DateFormat("EEE, MMM d")
+              .format(DateTime.now().add(const Duration(hours: 24))),
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),

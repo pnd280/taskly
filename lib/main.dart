@@ -20,7 +20,18 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Inter',
-        primarySwatch: Colors.purple,
+        primarySwatch: const MaterialColor(0xFF8672EF, {
+          50: Color(0xFFF3F0FE),
+          100: Color(0xFFE0D9FD),
+          200: Color(0xFFCDB2FA),
+          300: Color(0xFFB98BF6),
+          400: Color(0xFFA764F2),
+          500: Color(0xFF8672EF),
+          600: Color(0xFF6B55E6),
+          700: Color(0xFF553FD6),
+          800: Color(0xFF4029C5),
+          900: Color(0xFF2A158F),
+        }),
         textTheme: const TextTheme(
           bodyLarge: TextStyle(color: TasklyColor.blackText),
           bodyMedium: TextStyle(color: TasklyColor.blackText),
