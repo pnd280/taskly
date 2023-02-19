@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:taskly/globals.dart';
 import 'package:taskly/widgets/filter_bar.dart';
 import 'package:taskly/widgets/tag.dart';
 import 'package:taskly/miscs/dummies.dart';
@@ -14,10 +15,6 @@ class TaskOverallViewPage extends StatefulWidget {
 }
 
 class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
-  int currentChosenTag = 0;
-
-  String currentChosenDropdownItem = dummyUserTags.first;
-
   @override
   Widget build(BuildContext context) {
     final Color primaryColor = Theme.of(context).primaryColor;

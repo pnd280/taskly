@@ -3,11 +3,12 @@ import 'dart:math';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:taskly/globals.dart';
 import 'package:taskly/miscs/colors.dart';
+import 'package:taskly/miscs/dummies.dart';
 import 'package:taskly/miscs/utils.dart';
-
-GlobalKey<MonthViewState> _calendarMonthViewKey = GlobalKey<MonthViewState>();
-GlobalKey<DayViewState> _calendarDayViewKey = GlobalKey<DayViewState>();
+import 'package:taskly/widgets/filter_bar.dart';
+import 'package:taskly/globals.dart';
 
 class CalendarViewPage extends StatefulWidget {
   int view;
@@ -21,14 +22,57 @@ class CalendarViewPage extends StatefulWidget {
 class _CalendarViewPageState extends State<CalendarViewPage> {
   @override
   Widget build(BuildContext context) {
+    final Color primaryColor = Theme.of(context).primaryColor;
+
+    void tagOnTap(int index) {
+      setState(() {
+        currentChosenTag = index;
+      });
+    }
+
+    void dropdownOnTap(String? value) {
+      setState(() {
+        currentChosenTag = -1;
+        currentChosenDropdownItem = value!;
+        debugPrint(value);
+      });
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
-      body: CalendarView(widget.view),
+      body: Column(
+        children: [
+          // Container(),
+          FilterBar(
+              tags: dummyTags,
+              userTags: dummyUserTags,
+              currentChosenTag: currentChosenTag,
+              currentChosenDropdownItem: currentChosenDropdownItem,
+              dropdownOnTap: dropdownOnTap,
+              primaryColor: primaryColor,
+              tagOnTap: tagOnTap),
+          Expanded(
+            child: CalendarView(widget.view),
+          ),
+        ],
+      ),
     );
   }
 
-  // widget CalendarView returns a widget that displays a calendar (month, day)
+  
+
   Widget CalendarView(int view) {
+    GlobalKey<MonthViewState> _calendarMonthViewKey =
+        GlobalKey<MonthViewState>();
+    GlobalKey<DayViewState> _calendarDayViewKey = GlobalKey<DayViewState>();
+
+
+    void viewNextPage() {
+      MonthViewState().nextPage();
+    }
+
+    DateTime selectedDate = DateTime.now();
+
     switch (view) {
       case 0:
         return MonthView(
@@ -56,7 +100,8 @@ class _CalendarViewPageState extends State<CalendarViewPage> {
             );
           },
           onCellTap: (events, date) {
-            
+            // debugPrint(MonthViewState().toString());
+            _calendarMonthViewKey.currentState!.nextPage();
           },
         );
       case 1:

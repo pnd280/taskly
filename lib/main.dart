@@ -1,6 +1,7 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:taskly/globals.dart';
 import 'package:taskly/miscs/styles.dart';
 import 'package:taskly/pages/calendar_view.dart';
 import 'package:taskly/pages/settings.dart';
@@ -17,7 +18,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CalendarControllerProvider(
-      controller: EventController(),
+      controller: pageController,
       child: MaterialApp(
         title: 'Taskly',
         debugShowCheckedModeBanner: false,
@@ -121,13 +122,21 @@ class RootPageState extends State<RootPage> {
               duration: const Duration(milliseconds: 100),
               child: [0, 1].contains(currentNavPage)
                   ? IconButton(
+                      key: const Key('search-icon'),
                       splashRadius: 20,
                       icon: const Icon(
                         CupertinoIcons.search,
                       ),
                       onPressed: () {},
                     )
-                  : null),
+                  : IconButton(
+                      key: const Key('profile-icon'),
+                      splashRadius: 20,
+                      icon: const Icon(
+                        CupertinoIcons.profile_circled,
+                      ),
+                      onPressed: () {},
+                    )),
         ],
       ),
       body: [0, 2].contains(currentNavPage)
