@@ -58,7 +58,8 @@ class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: TaskCluster(DateTime.now(), anotherDummyTasks, primaryColor),
+                    child: TaskCluster(
+                        DateTime.now(), anotherDummyTasks, primaryColor),
                   ),
                 ),
               ],
@@ -74,46 +75,50 @@ class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
       decoration: BoxDecoration(
         border: Border.all(color: TasklyColor.blackText.withOpacity(.1)),
         borderRadius: BorderRadius.circular(11),
-        gradient:
-            (currentChosenTag < 0) ? TasklyGradient.purpleBackground : TasklyGradient.lightBackground,
+        gradient: (currentChosenTag < 0)
+            ? TasklyGradient.purpleBackground
+            : TasklyGradient.lightBackground,
       ),
       child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: currentChosenDropdownItem,
-          dropdownColor: (currentChosenTag < 0) ? primaryColor : Colors.white,
-          icon: Icon(
-            CupertinoIcons.chevron_down,
-            color: (currentChosenTag < 0) ? Colors.white : primaryColor,
-          ),
-          onChanged: (String? value) {
-            // This is called when the user selects an item.
-            setState(() {
-              currentChosenTag = -1;
-              currentChosenDropdownItem = value!;
-            });
-          },
-          items: dummyUserTags.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Text(
-                  value,
-                  style: (currentChosenTag < 0)
-                      ? const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        )
-                      : TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: primaryColor,
-                        ),
+        child: Expanded(
+          child: DropdownButton<String>(
+            value: currentChosenDropdownItem,
+            dropdownColor: (currentChosenTag < 0) ? primaryColor : Colors.white,
+            icon: Icon(
+              CupertinoIcons.chevron_down,
+              color: (currentChosenTag < 0) ? Colors.white : primaryColor,
+            ),
+            onChanged: (String? value) {
+              // This is called when the user selects an item.
+              setState(() {
+                currentChosenTag = -1;
+                currentChosenDropdownItem = value!;
+                debugPrint(value);
+              });
+            },
+            items: dummyUserTags.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Text(
+                    value,
+                    style: (currentChosenTag < 0)
+                        ? const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          )
+                        : TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: primaryColor,
+                          ),
+                  ),
                 ),
-              ),
-            );
-          }).toList(),
+              );
+            }).toList(),
+          ),
         ),
       ),
     );
