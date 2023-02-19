@@ -1,3 +1,4 @@
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:taskly/miscs/styles.dart';
@@ -15,39 +16,42 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Taskly',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Inter',
-        primarySwatch: const MaterialColor(0xFF8672EF, {
-          50: Color(0xFFF3F0FE),
-          100: Color(0xFFE0D9FD),
-          200: Color(0xFFCDB2FA),
-          300: Color(0xFFB98BF6),
-          400: Color(0xFFA764F2),
-          500: Color(0xFF8672EF),
-          600: Color(0xFF6B55E6),
-          700: Color(0xFF553FD6),
-          800: Color(0xFF4029C5),
-          900: Color(0xFF2A158F),
-        }),
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: TasklyColor.blackText),
-          bodyMedium: TextStyle(color: TasklyColor.blackText),
-          displayLarge: TextStyle(color: TasklyColor.blackText),
-          displayMedium: TextStyle(color: TasklyColor.blackText),
-          displaySmall: TextStyle(color: TasklyColor.blackText),
-          headlineMedium: TextStyle(color: TasklyColor.blackText),
-          headlineSmall: TextStyle(color: TasklyColor.blackText),
-          titleLarge: TextStyle(color: TasklyColor.blackText),
-          titleMedium: TextStyle(color: TasklyColor.blackText),
-          titleSmall: TextStyle(color: TasklyColor.blackText),
-          bodySmall: TextStyle(color: TasklyColor.blackText),
-          labelSmall: TextStyle(color: TasklyColor.blackText),
+    return CalendarControllerProvider(
+      controller: EventController(),
+      child: MaterialApp(
+        title: 'Taskly',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: 'Inter',
+          primarySwatch: const MaterialColor(0xFF8672EF, {
+            50: Color(0xFFF3F0FE),
+            100: Color(0xFFE0D9FD),
+            200: Color(0xFFCDB2FA),
+            300: Color(0xFFB98BF6),
+            400: Color(0xFFA764F2),
+            500: Color(0xFF8672EF),
+            600: Color(0xFF6B55E6),
+            700: Color(0xFF553FD6),
+            800: Color(0xFF4029C5),
+            900: Color(0xFF2A158F),
+          }),
+          textTheme: const TextTheme(
+            bodyLarge: TextStyle(color: TasklyColor.blackText),
+            bodyMedium: TextStyle(color: TasklyColor.blackText),
+            displayLarge: TextStyle(color: TasklyColor.blackText),
+            displayMedium: TextStyle(color: TasklyColor.blackText),
+            displaySmall: TextStyle(color: TasklyColor.blackText),
+            headlineMedium: TextStyle(color: TasklyColor.blackText),
+            headlineSmall: TextStyle(color: TasklyColor.blackText),
+            titleLarge: TextStyle(color: TasklyColor.blackText),
+            titleMedium: TextStyle(color: TasklyColor.blackText),
+            titleSmall: TextStyle(color: TasklyColor.blackText),
+            bodySmall: TextStyle(color: TasklyColor.blackText),
+            labelSmall: TextStyle(color: TasklyColor.blackText),
+          ),
         ),
+        home: const RootPage(),
       ),
-      home: const RootPage(),
     );
   }
 }
@@ -59,16 +63,20 @@ class RootPage extends StatefulWidget {
   State<RootPage> createState() => RootPageState();
 }
 
+int currentCalendarView = 0;
+
 class RootPageState extends State<RootPage> {
   int currentNavPage = 0;
 
-  int currentCalendarView = 0;
-
-  List<Widget> pages = const [
-    TaskOverallViewPage(),
-    CalendarViewPage(),
-    SettingsPage(),
+  List pages = [
+    const TaskOverallViewPage(),
+    null,
+    const SettingsPage(),
   ];
+
+  CalendarViewPage loadCalendarView(int view) {
+    return CalendarViewPage(view: view);
+  }
 
   List<String> appBarTitles = [
     'Inbox',
@@ -96,14 +104,13 @@ class RootPageState extends State<RootPage> {
               child: [1].contains(currentNavPage)
                   ? IconButton(
                       splashRadius: 20,
-                      icon: Icon(
-                        (currentCalendarView == 1
-                            ? CupertinoIcons.calendar
-                            : Icons.view_timeline_rounded)
-                      ),
+                      icon: Icon((currentCalendarView == 1
+                          ? CupertinoIcons.calendar
+                          : Icons.view_timeline_rounded)),
                       onPressed: () {
                         setState(() {
-                          currentCalendarView = currentCalendarView == 0 ? 1 : 0;
+                          currentCalendarView =
+                              currentCalendarView == 0 ? 1 : 0;
                         });
                       },
                     )
@@ -121,7 +128,9 @@ class RootPageState extends State<RootPage> {
                   : null),
         ],
       ),
-      body: pages[currentNavPage],
+      body: [0, 2].contains(currentNavPage)
+          ? pages[currentNavPage]
+          : loadCalendarView(currentCalendarView),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: [0, 1].contains(currentNavPage)
           ? Container(

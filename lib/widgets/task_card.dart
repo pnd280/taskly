@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:taskly/miscs/colors.dart';
 import 'package:taskly/miscs/styles.dart';
 import 'package:intl/intl.dart';
 
@@ -20,13 +21,21 @@ Widget TaskCluster(DateTime dateTime, List<Map> tasks, Color borderColor) {
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
+          ...(tasks.map((e) => TaskCard(e, borderColor)).toList()),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              DateFormat("EEE, MMM d").format(dateTime),
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
           ...(tasks.map((e) => TaskCard(e, borderColor)).toList())
         ],
       ),
     ],
   );
 }
-
+// TODO: change to flutter_slidable
 Widget TaskCard(Map task, Color borderColor) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 8),
@@ -51,14 +60,8 @@ Widget TaskCard(Map task, Color borderColor) {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(right: 5.0),
-                    child: Container(
-                      width: 22,
-                      height: 22,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: borderColor, width: 2),
-                        borderRadius: BorderRadius.circular(999),
-                      ),
-                    ),
+                    child: IconButton(
+                        icon: const Icon(Icons.circle_outlined, color: TasklyColor.VeriPeri,), onPressed: () {}),
                   ), // checkbox
                   Text(
                     task['title'],
