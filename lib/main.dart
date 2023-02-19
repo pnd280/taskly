@@ -62,6 +62,8 @@ class RootPage extends StatefulWidget {
 class RootPageState extends State<RootPage> {
   int currentNavPage = 0;
 
+  int currentCalendarView = 0;
+
   List<Widget> pages = const [
     TaskOverallViewPage(),
     CalendarViewPage(),
@@ -89,6 +91,23 @@ class RootPageState extends State<RootPage> {
         backgroundColor: Theme.of(context).primaryColor,
         elevation: 10,
         actions: [
+          AnimatedSwitcher(
+              duration: const Duration(milliseconds: 100),
+              child: [1].contains(currentNavPage)
+                  ? IconButton(
+                      splashRadius: 20,
+                      icon: Icon(
+                        (currentCalendarView == 1
+                            ? CupertinoIcons.calendar
+                            : Icons.view_timeline_rounded)
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          currentCalendarView = currentCalendarView == 0 ? 1 : 0;
+                        });
+                      },
+                    )
+                  : null),
           AnimatedSwitcher(
               duration: const Duration(milliseconds: 100),
               child: [0, 1].contains(currentNavPage)

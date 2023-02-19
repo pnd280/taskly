@@ -58,7 +58,7 @@ class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: TaskCluster('wqr', dummyTasks, primaryColor),
+                    child: TaskCluster(DateTime.now(), anotherDummyTasks, primaryColor),
                   ),
                 ),
               ],
