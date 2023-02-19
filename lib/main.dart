@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:taskly/globals.dart';
 import 'package:taskly/miscs/styles.dart';
 import 'package:taskly/pages/calendar_view.dart';
+import 'package:taskly/pages/overlay.dart';
 import 'package:taskly/pages/settings.dart';
+import 'package:taskly/pages/task_create.dart';
 import 'package:taskly/pages/task_overall_view.dart';
 import 'package:taskly/miscs/colors.dart';
 
@@ -14,6 +16,26 @@ void main() {
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const AncestorPage();
+  }
+}
+
+class AncestorPage extends StatefulWidget {
+  const AncestorPage({super.key});
+
+  @override
+  State<AncestorPage> createState() => AncestorPageState();
+}
+
+class AncestorPageState extends State<AncestorPage> {
+  void showTaskCreatePageCallBack() {
+    setState(() {
+      isTaskCreatePageVisible = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,24 +73,44 @@ class MainApp extends StatelessWidget {
             labelSmall: TextStyle(color: TasklyColor.blackText),
           ),
         ),
-        home: const RootPage(),
+        home: Stack(
+          children: [
+            RootPage(showTaskCreatePageCallBack: showTaskCreatePageCallBack),
+            Visibility(
+              visible: isTaskCreatePageVisible,
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isTaskCreatePageVisible = false;
+                  });
+                },
+                child: const OverlayPage(),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              child: Visibility(
+                visible: isTaskCreatePageVisible,
+                child: const TaskCreatePage(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
 class RootPage extends StatefulWidget {
-  const RootPage({super.key});
+  final Function showTaskCreatePageCallBack;
+
+  const RootPage({super.key, required this.showTaskCreatePageCallBack});
 
   @override
   State<RootPage> createState() => RootPageState();
 }
 
-int currentCalendarView = 0;
-
 class RootPageState extends State<RootPage> {
-  int currentNavPage = 0;
-
   List pages = [
     const TaskOverallViewPage(),
     null,
@@ -152,7 +194,9 @@ class RootPageState extends State<RootPage> {
                 borderRadius: BorderRadius.circular(999),
               ),
               child: FloatingActionButton(
-                onPressed: () {},
+                onPressed: () {
+                  widget.showTaskCreatePageCallBack();
+                },
                 child: const Icon(
                   CupertinoIcons.add,
                   size: 30,
