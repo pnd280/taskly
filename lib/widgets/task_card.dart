@@ -3,31 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:taskly/miscs/styles.dart';
 import 'package:intl/intl.dart';
 
-Widget TaskCluster(String dateTime, List<Map> tasks, Color borderColor) {
+Widget TaskCluster(DateTime dateTime, List<Map> tasks, Color borderColor) {
+  // Sort tasks based on priority key
+  tasks.sort((a, b) => a['priority'].compareTo(b['priority']));
+
   return ListView(
     // clipBehavior: Clip.none,
     children: [
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          DateFormat("EEE, MMM d").format(DateTime.now()),
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
       Column(
-        children: (tasks.map((e) => TaskCard(e, borderColor)).toList()),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              DateFormat("EEE, MMM d").format(dateTime),
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          ...(tasks.map((e) => TaskCard(e, borderColor)).toList())
+        ],
       ),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          DateFormat("EEE, MMM d")
-              .format(DateTime.now().add(const Duration(hours: 24))),
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
-      Column(
-        children: (tasks.map((e) => TaskCard(e, borderColor)).toList()),
-      )
     ],
   );
 }
@@ -83,7 +78,7 @@ Widget TaskCard(Map task, Color borderColor) {
                   size: 18,
                 ),
                 Text(
-                  TimeOfDay.fromDateTime(task['createdAt'])
+                  TimeOfDay.fromDateTime(task['beginAt'])
                       .toString()
                       .substring(10, 15),
                 )
