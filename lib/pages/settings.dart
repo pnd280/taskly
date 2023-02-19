@@ -181,7 +181,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         Text(
                           description,
                           style: const TextStyle(
-                              color: TasklyColor.greyText, fontSize: 11),
+                              color: TasklyColor.greyText, fontSize: 12),
                         )
                       ],
                     ),
