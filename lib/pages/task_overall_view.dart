@@ -80,45 +80,43 @@ class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
             : TasklyGradient.lightBackground,
       ),
       child: DropdownButtonHideUnderline(
-        child: Expanded(
-          child: DropdownButton<String>(
-            value: currentChosenDropdownItem,
-            dropdownColor: (currentChosenTag < 0) ? primaryColor : Colors.white,
-            icon: Icon(
-              CupertinoIcons.chevron_down,
-              color: (currentChosenTag < 0) ? Colors.white : primaryColor,
-            ),
-            onChanged: (String? value) {
-              // This is called when the user selects an item.
-              setState(() {
-                currentChosenTag = -1;
-                currentChosenDropdownItem = value!;
-                debugPrint(value);
-              });
-            },
-            items: dummyUserTags.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text(
-                    value,
-                    style: (currentChosenTag < 0)
-                        ? const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          )
-                        : TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: primaryColor,
-                          ),
-                  ),
-                ),
-              );
-            }).toList(),
+        child: DropdownButton<String>(
+          value: currentChosenDropdownItem,
+          dropdownColor: (currentChosenTag < 0) ? primaryColor : Colors.white,
+          icon: Icon(
+            CupertinoIcons.chevron_down,
+            color: (currentChosenTag < 0) ? Colors.white : primaryColor,
           ),
+          onChanged: (String? value) {
+            // This is called when the user selects an item.
+            setState(() {
+              currentChosenTag = -1;
+              currentChosenDropdownItem = value!;
+              debugPrint(value);
+            });
+          },
+          items: dummyUserTags.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Text(
+                  value,
+                  style: (currentChosenTag < 0)
+                      ? const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        )
+                      : TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: primaryColor,
+                        ),
+                ),
+              ),
+            );
+          }).toList(),
         ),
       ),
     );
