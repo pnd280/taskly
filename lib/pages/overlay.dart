@@ -7,7 +7,7 @@ class OverlayPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(.1),
+        color: Colors.black.withOpacity(.3),
       ),
     );
   }
