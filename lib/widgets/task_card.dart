@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:taskly/miscs/colors.dart';
-import 'package:taskly/miscs/styles.dart';
 import 'package:intl/intl.dart';
 
 Widget TaskCluster(DateTime dateTime, List<Map> tasks, Color borderColor) {
@@ -65,7 +64,7 @@ Widget TaskCard(Map task, Color borderColor) {
                   ), // checkbox
                   Text(
                     task['title'],
-                    style: TextStyle(),
+                    style: const TextStyle(),
                   ),
                 ],
               ),
@@ -76,7 +75,7 @@ Widget TaskCard(Map task, Color borderColor) {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(
+                const Icon(
                   CupertinoIcons.clock,
                   size: 18,
                 ),

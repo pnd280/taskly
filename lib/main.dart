@@ -75,7 +75,9 @@ class RootPageState extends State<RootPage> {
   ];
 
   CalendarViewPage loadCalendarView(int view) {
-    return CalendarViewPage(view: view);
+    return CalendarViewPage(
+      view: view,
+    );
   }
 
   List<String> appBarTitles = [

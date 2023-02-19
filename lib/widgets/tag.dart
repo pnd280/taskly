@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:taskly/miscs/colors.dart';
-import '../miscs/styles.dart';
 
 // TODO: refactor to class widget
 Widget Tag(String title, Color primaryColor, int index, setState,
