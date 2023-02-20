@@ -82,7 +82,7 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                           Expanded(
                             child: InputField(
                               updateCallBack: updateTitle,
-                              initialValue: 'afw',
+                              initialValue: '',
                             ),
                           ),
                         ],

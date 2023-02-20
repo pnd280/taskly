@@ -67,7 +67,7 @@ class _RichEditorState extends State<RichEditor> {
                     topLeft: Radius.circular(11),
                     topRight: Radius.circular(11)),
                 child: QuillHtmlEditor(
-                  text: '<b>Hello</b>This is a quill html editor example 😊',
+                  text: '<i>Hello</i> from <b>Taskly<b>! 😊',
                   hintText: '',
                   controller: controller,
                   isEnabled: true,
