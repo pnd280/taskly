@@ -1,11 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:taskly/globals.dart';
 import 'package:taskly/widgets/filter_bar.dart';
-import 'package:taskly/widgets/tag.dart';
 import 'package:taskly/miscs/dummies.dart';
 import 'package:taskly/widgets/task_card.dart';
-import '../miscs/colors.dart';
 
 class TaskOverallViewPage extends StatefulWidget {
   const TaskOverallViewPage({super.key});

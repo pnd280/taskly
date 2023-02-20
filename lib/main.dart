@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:taskly/globals.dart';
 import 'package:taskly/miscs/styles.dart';
 import 'package:taskly/pages/calendar_view.dart';
+import 'package:taskly/pages/overlay.dart';
 import 'package:taskly/pages/settings.dart';
+import 'package:taskly/pages/task_create.dart';
 import 'package:taskly/pages/task_overall_view.dart';
 import 'package:taskly/miscs/colors.dart';
 
@@ -17,6 +19,26 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return const AncestorPage();
+  }
+}
+
+class AncestorPage extends StatefulWidget {
+  const AncestorPage({super.key});
+
+  @override
+  State<AncestorPage> createState() => AncestorPageState();
+}
+
+class AncestorPageState extends State<AncestorPage> {
+  void toggleTaskCreatePageCallBack([bool val = true]) {
+    setState(() {
+      isTaskCreatePageVisible = val;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return CalendarControllerProvider(
       controller: pageController,
       child: MaterialApp(
@@ -24,6 +46,9 @@ class MainApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           fontFamily: 'Inter',
+          textSelectionTheme: const TextSelectionThemeData(
+            selectionHandleColor: Colors.transparent,
+          ),
           primarySwatch: const MaterialColor(0xFF8672EF, {
             50: Color(0xFFF3F0FE),
             100: Color(0xFFE0D9FD),
@@ -51,24 +76,46 @@ class MainApp extends StatelessWidget {
             labelSmall: TextStyle(color: TasklyColor.blackText),
           ),
         ),
-        home: const RootPage(),
+        home: Stack(
+          children: [
+            RootPage(showTaskCreatePageCallBack: toggleTaskCreatePageCallBack),
+            Visibility(
+              visible: isTaskCreatePageVisible,
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isTaskCreatePageVisible = false;
+                  });
+                },
+                child: const OverlayPage(),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              child: Visibility(
+                visible: isTaskCreatePageVisible,
+                child: TaskCreatePage(
+                  toggleTaskCreatePageCallBack: toggleTaskCreatePageCallBack,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
 class RootPage extends StatefulWidget {
-  const RootPage({super.key});
+  final Function showTaskCreatePageCallBack;
+
+  const RootPage({super.key, required this.showTaskCreatePageCallBack});
 
   @override
   State<RootPage> createState() => RootPageState();
 }
 
-int currentCalendarView = 0;
-
 class RootPageState extends State<RootPage> {
-  int currentNavPage = 0;
-
   List pages = [
     const TaskOverallViewPage(),
     null,
@@ -152,7 +199,9 @@ class RootPageState extends State<RootPage> {
                 borderRadius: BorderRadius.circular(999),
               ),
               child: FloatingActionButton(
-                onPressed: () {},
+                onPressed: () {
+                  widget.showTaskCreatePageCallBack();
+                },
                 child: const Icon(
                   CupertinoIcons.add,
                   size: 30,
