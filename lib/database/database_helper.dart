@@ -1,6 +1,12 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+import 'package:taskly/models/project.dart';
+import 'package:taskly/models/reminder.dart';
+import 'package:taskly/models/tag.dart';
+import 'package:taskly/models/task.dart';
+import 'package:taskly/models/tagged_tag.dart';
+import 'package:taskly/models/repeat_task.dart';
 class DatabaseHelper {
   static final _databaseName = "Taskly.db";
   static final _databaseVersion = 1;
@@ -137,7 +143,50 @@ class DatabaseHelper {
       )
     ''');
   }
-  
+  Future<int> insertTask(Task task) async {
+    Database db = await instance.database;
+    return await db.insert(tableTask, task.toMap());
+  }
+  Future<int> insertProject(Project project) async {
+    Database db = await instance.database;
+    return await db.insert(tableProject, project.toMap());
+  }
+  Future<int> insertTag(Tag tag) async {
+    Database db = await instance.database;
+    return await db.insert(tableTag, tag.toMap());
+  }
+  Future<int> insertReminder(Reminder reminder) async {
+    Database db = await instance.database;
+    return await db.insert(tableReminder, reminder.toMap());
+  }
+  Future<int> insertTaggedTag(Tagged taggedTag) async {
+    Database db = await instance.database;
+    return await db.insert(tableTaggedTag, taggedTag.toMap());
+  }
+  Future<int> insertRepeatTask(Repeat_Task repeatTask) async {
+    Database db = await instance.database;
+    return await db.insert(tableRepeatTask, repeatTask.toMap());
+  }
+  //get all tasks
+  Future<List<Task>> getTasks() async {
+    Database db = await instance.database;
+    List<Map<String, dynamic>> maps = await db.query(tableTask);
+    return List.generate(maps.length, (i) {
+      return Task(
+        id: maps[i]['id'],
+        title: maps[i]['title'],
+        richDescription: maps[i]['rich_description'],
+        createdAt: maps[i]['createdAt'],
+        beginAt: maps[i]['beginAt'],
+        endAt: maps[i]['endAt'],
+        repeat: maps[i]['repeat'],
+        priority: maps[i]['priority'],
+        isCompleted: maps[i]['isCompleted'],
+        projectId: maps[i]['projectId'],
+        isVisible: maps[i]['isVisible'],
+      );
+    });
+  }
 
 
 }
