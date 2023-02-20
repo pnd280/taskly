@@ -147,6 +147,41 @@ class DatabaseHelper {
     Database db = await instance.database;
     return await db.insert(tableTask, task.toMap());
   }
+  //get all tasks 
+  Future<List<Task>> queryAllTasks() async {
+    Database db = await instance.database;
+    var res = await db.query(tableTask);
+    List<Task> list =
+        res.isNotEmpty ? res.map((c) => Task.fromMap(c)).toList() : [];
+    return list;
+  }
+  //update task
+  Future<int> updateTask(Task task) async {
+    Database db = await instance.database;
+    return await db.update(tableTask, task.toMap(),
+        where: '$columnTaskId = ?', whereArgs: [task.id]);
+  }
+  //delete task
+  Future<int> deleteTask(String id) async {
+    Database db = await instance.database;
+    return await db.delete(tableTask, where: '$columnTaskId = ?', whereArgs: [id]);
+  }
+  //filter task by project
+  Future<List<Task>> filterTaskByProject(String projectId) async {
+    Database db = await instance.database;
+    var res = await db.query(tableTask,where: '$columnTaskProjectId = ?', whereArgs: [projectId]);
+    List<Task> list =
+        res.isNotEmpty ? res.map((c) => Task.fromMap(c)).toList() : [];
+    return list;
+  }
+  //filter task by tag
+  Future<List<Task>> filterTaskByTag(String tagId) async {
+    Database db = await instance.database;
+    var res = await db.query(tableTaggedTag,where: '$columnTaggedTagTagId = ?', whereArgs: [tagId]);
+    List<Task> list =
+        res.isNotEmpty ? res.map((c) => Task.fromMap(c)).toList() : [];
+    return list;
+  }
   Future<int> insertProject(Project project) async {
     Database db = await instance.database;
     return await db.insert(tableProject, project.toMap());
@@ -168,25 +203,6 @@ class DatabaseHelper {
     return await db.insert(tableRepeatTask, repeatTask.toMap());
   }
   //get all tasks
-  Future<List<Task>> getTasks() async {
-    Database db = await instance.database;
-    List<Map<String, dynamic>> maps = await db.query(tableTask);
-    return List.generate(maps.length, (i) {
-      return Task(
-        id: maps[i]['id'],
-        title: maps[i]['title'],
-        richDescription: maps[i]['rich_description'],
-        createdAt: maps[i]['createdAt'],
-        beginAt: maps[i]['beginAt'],
-        endAt: maps[i]['endAt'],
-        repeat: maps[i]['repeat'],
-        priority: maps[i]['priority'],
-        isCompleted: maps[i]['isCompleted'],
-        projectId: maps[i]['projectId'],
-        isVisible: maps[i]['isVisible'],
-      );
-    });
-  }
 
 
 }
