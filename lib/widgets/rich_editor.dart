@@ -48,6 +48,7 @@ class _RichEditorState extends State<RichEditor> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(11),
         boxShadow: const [TasklyStyle.shadow],
       ),
       child: Column(
