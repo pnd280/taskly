@@ -1,14 +1,11 @@
-import 'dart:math';
 
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:taskly/globals.dart';
 import 'package:taskly/miscs/colors.dart';
 import 'package:taskly/miscs/dummies.dart';
 import 'package:taskly/miscs/utils.dart';
 import 'package:taskly/widgets/filter_bar.dart';
-import 'package:taskly/globals.dart';
 
 class CalendarViewPage extends StatefulWidget {
   int view;
@@ -62,9 +59,9 @@ class _CalendarViewPageState extends State<CalendarViewPage> {
   
 
   Widget CalendarView(int view) {
-    GlobalKey<MonthViewState> _calendarMonthViewKey =
+    GlobalKey<MonthViewState> calendarMonthViewKey =
         GlobalKey<MonthViewState>();
-    GlobalKey<DayViewState> _calendarDayViewKey = GlobalKey<DayViewState>();
+    GlobalKey<DayViewState> calendarDayViewKey = GlobalKey<DayViewState>();
 
 
     void viewNextPage() {
@@ -76,7 +73,7 @@ class _CalendarViewPageState extends State<CalendarViewPage> {
     switch (view) {
       case 0:
         return MonthView(
-          key: _calendarMonthViewKey,
+          key: calendarMonthViewKey,
           showBorder: false,
           weekDayBuilder: (day) {
             return Padding(
@@ -101,12 +98,12 @@ class _CalendarViewPageState extends State<CalendarViewPage> {
           },
           onCellTap: (events, date) {
             // debugPrint(MonthViewState().toString());
-            _calendarMonthViewKey.currentState!.nextPage();
+            calendarMonthViewKey.currentState!.nextPage();
           },
         );
       case 1:
         return DayView(
-          key: _calendarDayViewKey,
+          key: calendarDayViewKey,
         );
       default:
         return const MonthView();

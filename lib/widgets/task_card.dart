@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:taskly/miscs/colors.dart';
 import 'package:intl/intl.dart';
 
-Widget TaskCluster(DateTime dateTime, List<Map> tasks, Color borderColor) {
+Widget TaskCluster(
+  DateTime dateTime,
+  List<Map> tasks,
+  Color borderColor,
+) {
   // Sort tasks based on priority key
   tasks.sort((a, b) => a['priority'].compareTo(b['priority']));
 
@@ -34,6 +38,7 @@ Widget TaskCluster(DateTime dateTime, List<Map> tasks, Color borderColor) {
     ],
   );
 }
+
 // TODO: change to flutter_slidable
 Widget TaskCard(Map task, Color borderColor) {
   return Padding(
@@ -60,7 +65,11 @@ Widget TaskCard(Map task, Color borderColor) {
                   Padding(
                     padding: const EdgeInsets.only(right: 5.0),
                     child: IconButton(
-                        icon: const Icon(Icons.circle_outlined, color: TasklyColor.VeriPeri,), onPressed: () {}),
+                        icon: const Icon(
+                          Icons.circle_outlined,
+                          color: TasklyColor.VeriPeri,
+                        ),
+                        onPressed: () {}),
                   ), // checkbox
                   Text(
                     task['title'],

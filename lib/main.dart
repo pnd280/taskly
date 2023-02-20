@@ -31,9 +31,9 @@ class AncestorPage extends StatefulWidget {
 }
 
 class AncestorPageState extends State<AncestorPage> {
-  void showTaskCreatePageCallBack() {
+  void toggleTaskCreatePageCallBack([bool val = true]) {
     setState(() {
-      isTaskCreatePageVisible = true;
+      isTaskCreatePageVisible = val;
     });
   }
 
@@ -46,6 +46,9 @@ class AncestorPageState extends State<AncestorPage> {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           fontFamily: 'Inter',
+          textSelectionTheme: const TextSelectionThemeData(
+            selectionHandleColor: Colors.transparent,
+          ),
           primarySwatch: const MaterialColor(0xFF8672EF, {
             50: Color(0xFFF3F0FE),
             100: Color(0xFFE0D9FD),
@@ -75,7 +78,7 @@ class AncestorPageState extends State<AncestorPage> {
         ),
         home: Stack(
           children: [
-            RootPage(showTaskCreatePageCallBack: showTaskCreatePageCallBack),
+            RootPage(showTaskCreatePageCallBack: toggleTaskCreatePageCallBack),
             Visibility(
               visible: isTaskCreatePageVisible,
               child: GestureDetector(
@@ -91,7 +94,9 @@ class AncestorPageState extends State<AncestorPage> {
               bottom: 0,
               child: Visibility(
                 visible: isTaskCreatePageVisible,
-                child: const TaskCreatePage(),
+                child: TaskCreatePage(
+                  toggleTaskCreatePageCallBack: toggleTaskCreatePageCallBack,
+                ),
               ),
             ),
           ],

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:taskly/miscs/colors.dart';
 import 'package:taskly/miscs/styles.dart';
-import '../globals.dart';
+import 'package:taskly/pages/task_editor.dart';
 
 class TaskCreatePage extends StatelessWidget {
-  const TaskCreatePage({super.key});
+  final toggleTaskCreatePageCallBack;
+
+  const TaskCreatePage({super.key, required this.toggleTaskCreatePageCallBack});
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +24,19 @@ class TaskCreatePage extends StatelessWidget {
       child: Column(
         children: [
           OptionCard(
-            icon: Icons.check,
-            title: 'Add single task',
-            description: 'Create a single task',
-          ),
+              icon: Icons.check,
+              title: 'Add single task',
+              description: 'Create a single task',
+              callBack: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) {
+                      return TaskEditorPage();
+                    },
+                  ),
+                );
+                toggleTaskCreatePageCallBack(false);
+              }),
           OptionCard(
             icon: Icons.done_all,
             title: 'Add project (task group)',
@@ -58,7 +69,7 @@ class TaskCreatePage extends StatelessWidget {
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: color == null ? TasklyColor.VeriPeri : color,
+                    color: color ?? TasklyColor.VeriPeri,
                     borderRadius: BorderRadius.circular(999),
                   ),
                   child: Icon(

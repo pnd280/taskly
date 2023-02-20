@@ -29,7 +29,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'General',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -40,7 +40,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            boxShadow: [TasklyStyle.shadow],
+                            boxShadow: const [TasklyStyle.shadow],
                             borderRadius: BorderRadius.circular(11),
                           ),
                           child: Column(
@@ -158,7 +158,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: color == null ? TasklyColor.VeriPeri : color,
+                    color: color ?? TasklyColor.VeriPeri,
                     borderRadius: BorderRadius.circular(999),
                   ),
                   child: Icon(
