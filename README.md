@@ -20,5 +20,8 @@
 ## Timeline view  
 ![Timeline view](https://raw.githubusercontent.com/pnd280/taskly/master/imgs/timeline-view%20(Small).png?raw=true) 
 
+## Rich-text Editor View
+![Timeline view](https://raw.githubusercontent.com/pnd280/taskly/master/imgs/task-editor-view%20(Small).png?raw=true) 
+
 ## Setting view  
 ![Settings](https://raw.githubusercontent.com/pnd280/taskly/master/imgs/settings%20(Small).png?raw=true)
