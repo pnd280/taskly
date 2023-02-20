@@ -16,4 +16,34 @@ class Task {
   final String projectId;
   final bool isVisible;
   Task(this.id, this.title, this.rich_description, this.createdAt, this.beginAt, this.endAt, this.repeat, this.priority, this.isCompleted, this.projectId, this.isVisible); 
+  
+  Map<String, dynamic> toMap() {
+  return {
+    'id': id,
+    'title': title,
+    'rich_description': rich_description,
+    'createdAt': createdAt,
+    'beginAt': beginAt,
+    'endAt': endAt,
+    'repeat': repeat,
+    'priority': priority,
+    'isCompleted': isCompleted,
+    'projectId': projectId,
+    'isVisible': isVisible,
+  };}
+  factory Task.fromMap(Map<String, dynamic> map) {
+    return Task(
+      map['id'],
+      map['title'],
+      map['rich_description'],
+      map['createdAt'],
+      map['beginAt'],
+      map['endAt'],
+      map['repeat'],
+      map['priority'],
+      map['isCompleted'],
+      map['projectId'],
+      map['isVisible'],
+    );
+  }
 }

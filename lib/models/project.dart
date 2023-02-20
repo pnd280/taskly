@@ -10,8 +10,24 @@ class Project {
   String title;
   String description;
   DateTime createdAt;
-  //set default value for isVisible is True
-  bool isVisible = true;
+  bool isVisible ;
 
-  Project(this.title, this.description, this.createdAt);
+  Project(this.id, this.title, this.description, this.createdAt, this.isVisible);
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'createdAt': createdAt,
+      'isVisible': isVisible,
+    };}
+  factory Project.fromMap(Map<String, dynamic> map) {
+    return Project(
+      map['id'],
+      map['title'],
+      map['description'],
+      map['createdAt'],
+      map['isVisible'],
+    );
+  }
 }
