@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:intl/intl.dart';
+import 'package:taskly/globals.dart';
 import 'package:taskly/miscs/colors.dart';
 import 'package:taskly/miscs/styles.dart';
 import 'package:taskly/widgets/color_picker.dart';
+import 'package:taskly/widgets/date_picker.dart';
 import 'package:taskly/widgets/rich_editor.dart';
 
 import '../widgets/custom_text_field.dart';
@@ -23,11 +26,13 @@ class TaskEditorPage extends StatefulWidget {
 class _TaskEditorPageState extends State<TaskEditorPage> {
   String title = '';
 
-  void updateTitle(value) {
-    setState(() {
-      title = value;
-    });
-  }
+  DateTime? startDate;
+  DateTime? endDate;
+
+  TimeOfDay? startTime;
+  TimeOfDay? endTime;
+
+  String richDescription = '';
 
   Color pickerColor = TasklyColor.VeriPeri;
   Color currentColor = TasklyColor.VeriPeri;
@@ -38,136 +43,279 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
       setState(() => pickerColor = color);
     }
 
-    return Scaffold(
-        appBar: AppBar(
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: IconButton(
-                splashRadius: 25,
-                onPressed: () {},
-                icon: const Icon(
-                  CupertinoIcons.trash,
+    return GestureDetector(
+      onTap: () {
+        focusNode.unfocus();
+      },
+      child: Container(
+        color: Colors.transparent,
+        child: Scaffold(
+            appBar: AppBar(
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: IconButton(
+                    splashRadius: 25,
+                    onPressed: () {},
+                    icon: const Icon(
+                      CupertinoIcons.trash,
+                    ),
+                  ),
                 ),
-              ),
+                IconButton(
+                  splashRadius: 25,
+                  onPressed: () {
+                    Map _task = {
+                      'color': currentColor,
+                      'title': title,
+                      'startDate': startDate,
+                      'startTime': startTime,
+                      'endDate': endDate,
+                      'endTime': endTime,
+                      'rich_description': richDescription
+                    };
+                    debugPrint('Map Contents:');
+                    _task.forEach((key, value) {
+                      debugPrint('$key: $value');
+                    });
+                  },
+                  icon: const Icon(
+                    CupertinoIcons.checkmark_alt,
+                  ),
+                )
+              ],
             ),
-            IconButton(
-              splashRadius: 25,
-              onPressed: () {},
-              icon: const Icon(
-                CupertinoIcons.checkmark_alt,
-              ),
-            )
-          ],
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20.0),
-                      child: ColorPickerCluster(
-                        onColorChange: changeColor,
-                      ),
-                    ),
-                    Expanded(
-                      child: ShadowBoxWithTitle(
-                        title: 'Title',
-                        child: [
-                          Expanded(
-                            child: InputField(
-                              updateCallBack: updateTitle,
-                              initialValue: '',
-                            ),
+            body: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20.0),
+                          child: ColorPickerCluster(
+                            onColorChange: changeColor,
                           ),
-                        ],
-                      ),
+                        ),
+                        Expanded(
+                          child: ShadowBoxWithTitle(
+                            title: 'Title',
+                            child: [
+                              Expanded(
+                                child: InputField(
+                                  updateCallBack: (value) {
+                                    setState(() {
+                                      title = value;
+                                    });
+                                  },
+                                  initialValue: '',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 20.0),
-                        child: ShadowBoxWithTitle(
-                          title: 'Start Date',
-                          child: [
-                            Expanded(
-                              child: InputField(
-                                updateCallBack: updateTitle,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 20.0),
+                            child: GestureDetector(
+                              onTap: () async {
+                                await _selectDate(
+                                  context,
+                                  startDate,
+                                  (value) {
+                                    setState(() {
+                                      startDate = value;
+                                    });
+                                  },
+                                );
+                                debugPrint('Start date: $startDate');
+                              },
+                              child: ShadowBoxWithTitle(
+                                title: 'Start Date',
+                                child: [
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        const Padding(
+                                          padding: EdgeInsets.only(right: 10.0),
+                                          child: Icon(
+                                            Icons.calendar_today,
+                                            color: TasklyColor.greyText,
+                                          ),
+                                        ),
+                                        startDate == null
+                                            ? const Text('Select date')
+                                            : Text(DateFormat('dd/MM/yy')
+                                                .format(startDate!)),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                    Expanded(
-                      child: ShadowBoxWithTitle(
-                        title: 'Start Time',
-                        child: [
-                          Expanded(
-                            child: InputField(
-                              updateCallBack: updateTitle,
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async {
+                              await _selectTime(
+                                context,
+                                startTime,
+                                (value) {
+                                  setState(() {
+                                    startTime = value;
+                                  });
+                                },
+                              );
+                              debugPrint('Start time: $startTime');
+                            },
+                            child: ShadowBoxWithTitle(
+                              title: 'Start Time',
+                              child: [
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.only(right: 10.0),
+                                        child: Icon(
+                                          Icons.calendar_today,
+                                          color: TasklyColor.greyText,
+                                        ),
+                                      ),
+                                      startTime == null
+                                          ? const Text('Select time')
+                                          : Text(DateFormat('hh:mm a').format(
+                                              DateTime(
+                                                  2020,
+                                                  1,
+                                                  1,
+                                                  startTime!.hour,
+                                                  startTime!.minute))),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 20.0),
-                        child: ShadowBoxWithTitle(
-                          title: 'End Date',
-                          child: [
-                            Expanded(
-                              child: InputField(
-                                updateCallBack: updateTitle,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 20.0),
+                            child: GestureDetector(
+                              onTap: () async {
+                                await _selectDate(
+                                  context,
+                                  startDate,
+                                  (value) {
+                                    setState(() {
+                                      endDate = value;
+                                    });
+                                  },
+                                );
+                                debugPrint('End date: $endDate');
+                              },
+                              child: ShadowBoxWithTitle(
+                                title: 'End Date',
+                                child: [
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        const Padding(
+                                          padding: EdgeInsets.only(right: 10.0),
+                                          child: Icon(
+                                            Icons.calendar_today,
+                                            color: TasklyColor.greyText,
+                                          ),
+                                        ),
+                                        endDate == null
+                                            ? const Text('Select date')
+                                            : Text(DateFormat('dd/MM/yy')
+                                                .format(endDate!)),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                    Expanded(
-                      child: ShadowBoxWithTitle(
-                        title: 'End Time',
-                        child: [
-                          Expanded(
-                            child: InputField(
-                              updateCallBack: updateTitle,
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async {
+                              await _selectTime(
+                                context,
+                                startTime,
+                                (value) {
+                                  setState(() {
+                                    endTime = value;
+                                  });
+                                },
+                              );
+                              debugPrint('End time: $endTime');
+                            },
+                            child: ShadowBoxWithTitle(
+                              title: 'Start Time',
+                              child: [
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.only(right: 10.0),
+                                        child: Icon(
+                                          Icons.calendar_today,
+                                          color: TasklyColor.greyText,
+                                        ),
+                                      ),
+                                      endTime == null
+                                          ? const Text('Select time')
+                                          : Text(DateFormat('hh:mm a').format(
+                                              DateTime(
+                                                  2020,
+                                                  1,
+                                                  1,
+                                                  endTime!.hour,
+                                                  endTime!.minute))),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  Expanded(
+                    child: RichEditor(onUpdateCallBack: (value) {
+                      setState(() {
+                        richDescription = value;
+                      });
+                    }),
+                  ),
+                ],
               ),
-              // Expanded(child: RichEditor())
-              const Expanded(
-                child: RichEditor(),
-              )
-            ],
-          ),
-        ));
+            )),
+      ),
+    );
   }
 
   Widget ColorPickerCluster({required onColorChange}) {
@@ -257,5 +405,30 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
         ],
       ),
     );
+  }
+
+  Future<void> _selectDate(
+      BuildContext context, DateTime? selectedDate, onUpdateCallback) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate ?? DateTime.now(),
+        firstDate: DateTime(2010),
+        lastDate: DateTime(2030));
+    if (picked != null) {
+      onUpdateCallback(picked);
+    }
+  }
+
+  Future<void> _selectTime(
+      BuildContext context, TimeOfDay? selectedTime, onUpdateCallback) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: selectedTime ?? TimeOfDay.now(),
+    );
+    if (picked != null) {
+      setState(() {
+        onUpdateCallback(picked);
+      });
+    }
   }
 }

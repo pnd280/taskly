@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
+import 'package:taskly/globals.dart';
 import 'package:taskly/miscs/colors.dart';
 import 'package:taskly/miscs/styles.dart';
 
 class RichEditor extends StatefulWidget {
-  const RichEditor({super.key});
+  var onUpdateCallBack;
+
+  RichEditor({super.key, required this.onUpdateCallBack});
 
   @override
   State<RichEditor> createState() => _RichEditorState();
@@ -67,20 +70,26 @@ class _RichEditorState extends State<RichEditor> {
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(11),
                     topRight: Radius.circular(11)),
-                child: QuillHtmlEditor(
-                  text: '<i>Hello</i> from <b>Taskly<b>! 😊',
-                  hintText: '',
-                  controller: controller,
-                  isEnabled: true,
-                  height: MediaQuery.of(context).size.height,
-                  textStyle: _editorTextStyle,
-                  hintTextStyle: _hintTextStyle,
-                  hintTextAlign: TextAlign.start,
-                  padding: const EdgeInsets.only(left: 10, top: 5),
-                  hintTextPadding: EdgeInsets.zero,
-                  backgroundColor: _backgroundColor,
-                  // onFocusChanged: (hasFocus) => debugPrint('has focus $hasFocus'),
-                  // onTextChanged: (text) => debugPrint('widget text change $text'),
+                child: Container(
+                  color: Colors.transparent,
+                  child: QuillHtmlEditor(
+                    text: '<i>Hello</i> from <b>Taskly<b>! 😊',
+                    hintText: '',
+                    controller: controller,
+                    isEnabled: true,
+                    height: MediaQuery.of(context).size.height,
+                    textStyle: _editorTextStyle,
+                    hintTextStyle: _hintTextStyle,
+                    hintTextAlign: TextAlign.start,
+                    padding: const EdgeInsets.only(left: 10, top: 5),
+                    hintTextPadding: EdgeInsets.zero,
+                    backgroundColor: _backgroundColor,
+                    // onFocusChanged: (hasFocus) => debugPrint('has focus $hasFocus'),
+                    // onTextChanged: (text) => debugPrint('widget text change $text'),
+                    onTextChanged: (text) {
+                      widget.onUpdateCallBack(text);
+                    },
+                  ),
                 ),
               ),
             ),
