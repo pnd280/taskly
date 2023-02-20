@@ -29,6 +29,7 @@ class _InputFieldState extends State<InputField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      textCapitalization: TextCapitalization.sentences,
       focusNode: focusNode,
       enabled: widget.enabled,
       controller: _controller,
