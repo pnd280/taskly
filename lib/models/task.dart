@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:floor/floor.dart';
-@entity
+
+
 class Task { 
   //set primary key for id
-  @primaryKey 
   final String id;  
   final String title;  
   final int rich_description;
