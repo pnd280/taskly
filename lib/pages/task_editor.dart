@@ -6,6 +6,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:intl/intl.dart';
 import 'package:taskly/globals.dart';
 import 'package:taskly/miscs/colors.dart';
+import 'package:taskly/miscs/dummies.dart';
 import 'package:taskly/miscs/styles.dart';
 import 'package:taskly/widgets/color_picker.dart';
 import 'package:taskly/widgets/custom_snackbar.dart';
@@ -39,7 +40,6 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
 
   Color pickerColor = TasklyColor.VeriPeri;
   Color currentColor = TasklyColor.VeriPeri;
-
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +87,7 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                     _task.forEach((key, value) {
                       debugPrint('$key: $value');
                     });
+                    Navigator.of(context).pop();
                   },
                   icon: const Icon(
                     CupertinoIcons.checkmark_alt,
