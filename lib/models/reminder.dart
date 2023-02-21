@@ -1,6 +1,5 @@
 
 import 'dart:convert';
-import 'package:floor/floor.dart';
 
 
 class Reminder {
@@ -29,6 +28,6 @@ class Reminder {
   String toString() {
     return 'Reminder(id: $id, taskId: $taskId, time: $time)';
   }
-  
+
   
 }

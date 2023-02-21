@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'package:floor/floor.dart';
-import 'package:uuid/uuid.dart';
 
-@entity
+
 class Project {
   //set primary key for id
   

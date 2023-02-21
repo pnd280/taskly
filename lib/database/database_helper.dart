@@ -1,5 +1,11 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:flutter/widgets.dart';
+//import floor
+
 
 import 'package:taskly/models/project.dart';
 import 'package:taskly/models/reminder.dart';
@@ -62,11 +68,12 @@ class DatabaseHelper {
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
   
-  static Database _database;
+  static Database? _database;
   Future<Database> get database async {
-    if (_database != null) return _database;
+    if (_database != null) return _database!;
+    // Initialize the DB first time it is accessed
     _database = await _initDatabase();
-    return _database;
+    return _database!;
   }
 
   _initDatabase() async {
@@ -186,6 +193,7 @@ class DatabaseHelper {
     Database db = await instance.database;
     return await db.insert(tableProject, project.toMap());
   }
+  
   Future<int> insertTag(Tag tag) async {
     Database db = await instance.database;
     return await db.insert(tableTag, tag.toMap());
@@ -203,6 +211,11 @@ class DatabaseHelper {
     return await db.insert(tableRepeatTask, repeatTask.toMap());
   }
   //get all tasks
-
-
+}
+// write main function to run DB init
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DatabaseHelper.instance.database;
+  //create database
+  
 }
