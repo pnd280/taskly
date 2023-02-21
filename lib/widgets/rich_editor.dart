@@ -1,10 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
+import 'package:taskly/globals.dart';
 import 'package:taskly/miscs/colors.dart';
 import 'package:taskly/miscs/styles.dart';
+import 'package:taskly/widgets/custom_snackbar.dart';
 
 class RichEditor extends StatefulWidget {
-  const RichEditor({super.key});
+  var onUpdateCallBack;
+
+  RichEditor({super.key, required this.onUpdateCallBack});
 
   @override
   State<RichEditor> createState() => _RichEditorState();
@@ -48,6 +54,7 @@ class _RichEditorState extends State<RichEditor> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(11),
         boxShadow: const [TasklyStyle.shadow],
       ),
       child: Column(
@@ -66,20 +73,32 @@ class _RichEditorState extends State<RichEditor> {
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(11),
                     topRight: Radius.circular(11)),
-                child: QuillHtmlEditor(
-                  text: '<i>Hello</i> from <b>Taskly<b>! 😊',
-                  hintText: '',
-                  controller: controller,
-                  isEnabled: true,
-                  height: MediaQuery.of(context).size.height,
-                  textStyle: _editorTextStyle,
-                  hintTextStyle: _hintTextStyle,
-                  hintTextAlign: TextAlign.start,
-                  padding: const EdgeInsets.only(left: 10, top: 5),
-                  hintTextPadding: EdgeInsets.zero,
-                  backgroundColor: _backgroundColor,
-                  // onFocusChanged: (hasFocus) => debugPrint('has focus $hasFocus'),
-                  // onTextChanged: (text) => debugPrint('widget text change $text'),
+                child: Container(
+                  color: Colors.transparent,
+                  child: QuillHtmlEditor(
+                    text: '<i>Hello</i> from <b>Taskly<b>! 😊',
+                    hintText: '',
+                    controller: controller,
+                    isEnabled: true,
+                    height: MediaQuery.of(context).size.height,
+                    textStyle: _editorTextStyle,
+                    hintTextStyle: _hintTextStyle,
+                    hintTextAlign: TextAlign.start,
+                    padding: const EdgeInsets.only(left: 10, top: 5),
+                    hintTextPadding: EdgeInsets.zero,
+                    backgroundColor: _backgroundColor,
+                    onFocusChanged: (hasFocus) => debugPrint('has focus $hasFocus'),
+                    // onFocusChanged: (hasFocus) => {
+                    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+                    //     scrollController
+                    //         .jumpTo(scrollController.position.maxScrollExtent);
+                    //   })
+                    // },
+                    // onTextChanged: (text) => debugPrint('widget text change $text'),
+                    onTextChanged: (text) {
+                      widget.onUpdateCallBack(text);
+                    },
+                  ),
                 ),
               ),
             ),
@@ -96,20 +115,80 @@ class _RichEditorState extends State<RichEditor> {
               activeIconColor: Colors.black,
               controller: controller,
               toolBarConfig: customToolBarList,
-              // customButtons: [
-              //   InkWell(
-              //       onTap: () async {},
-              //       child: const Icon(
-              //         Icons.favorite,
-              //         color: Colors.black,
-              //       )),
-              //   InkWell(
-              //       onTap: () {},
-              //       child: const Icon(
-              //         Icons.add_circle,
-              //         color: Colors.black,
-              //       )),
-              // ],
+              customButtons: [
+                InkWell(
+                  onTap: () async {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          backgroundColor: Colors.grey.shade100,
+                          content: Container(
+                            // color: Colors.grey.shade300,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                MultiSelectContainer(
+                                    controller: tagSelectionController,
+                                    itemsDecoration: MultiSelectDecorations(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        border: Border.all(
+                                            color: TasklyColor.VeriPeri),
+                                        borderRadius:
+                                            BorderRadius.circular(999),
+                                      ),
+                                    ),
+                                    items: [
+                                      MultiSelectCard(
+                                        value: 'Important',
+                                        label: 'Important',
+                                      ),
+                                      MultiSelectCard(
+                                        value: 'Work',
+                                        label: 'Work',
+                                      ),
+                                      MultiSelectCard(
+                                        value: 'Personal',
+                                        label: 'Personal',
+                                      ),
+                                      MultiSelectCard(
+                                        value: 'Entertainment',
+                                        label: 'Entertainment',
+                                      ),
+                                    ],
+                                    onMaximumSelected:
+                                        (allSelectedItems, selectedItem) {
+                                      CustomSnackBar.showInSnackBar(
+                                          'The limit has been reached',
+                                          context);
+                                    },
+                                    onChange:
+                                        (allSelectedItems, selectedItem) {}),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 15.0),
+                                  child: IconButton(
+                                    splashRadius: 25,
+                                    color: TasklyColor.VeriPeri,
+                                    onPressed: () {},
+                                    icon: const Icon(
+                                      CupertinoIcons.add,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: const Icon(
+                    CupertinoIcons.tag,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
           ),
           Visibility(

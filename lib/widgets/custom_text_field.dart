@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taskly/globals.dart';
 
 class InputField extends StatefulWidget {
   dynamic updateCallBack;
@@ -27,18 +28,18 @@ class _InputFieldState extends State<InputField> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: TextField(
-        enabled: widget.enabled,
-        controller: _controller,
-        onChanged: (text) {
-          widget.updateCallBack(text);
-        },
-        maxLines: 1,
-        decoration: const InputDecoration(
-          isDense: true,
-          border: InputBorder.none,
-        ),
+    return TextField(
+      textCapitalization: TextCapitalization.sentences,
+      focusNode: focusNode,
+      enabled: widget.enabled,
+      controller: _controller,
+      onChanged: (text) {
+        widget.updateCallBack(text);
+      },
+      maxLines: 1,
+      decoration: const InputDecoration(
+        isDense: true,
+        border: InputBorder.none,
       ),
     );
   }

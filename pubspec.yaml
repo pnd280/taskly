@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_colorpicker: ^1.0.3
+  flutter_multi_select_items: ^0.4.2
   intl: ^0.18.0
   quill_html_editor: ^2.0.7
 
