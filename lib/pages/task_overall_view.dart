@@ -3,6 +3,7 @@ import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:taskly/db_test.dart';
 import 'package:taskly/globals.dart';
 import 'package:taskly/miscs/colors.dart';
 import 'package:taskly/widgets/filter_bar.dart';
@@ -65,6 +66,9 @@ class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
           ]
         ];
         updateFinalFormattedTasks(newFormattedList: emptyList);
+        break;
+      case 2:
+        dbHelper();
         break;
       default:
     }

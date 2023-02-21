@@ -7,7 +7,7 @@ import 'package:sqflite/sqflite.dart';
 
 // await getDatabasesPath()
 // 
-void main() async {
+void dbHelper() async {
   // Avoid errors caused by flutter upgrade.
   // Importing 'package:flutter/widgets.dart' is required.
   WidgetsFlutterBinding.ensureInitialized();
