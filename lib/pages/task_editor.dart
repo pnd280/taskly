@@ -95,262 +95,253 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                 )
               ],
             ),
-            body: SingleChildScrollView(
-              controller: scrollController,
-              scrollDirection: Axis.vertical,
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height -
-                    MediaQuery.of(context).padding.top -
-                    kToolbarHeight,
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 20.0),
-                              child: ColorPickerCluster(
-                                onColorChange: changeColor,
+            body: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20.0),
+                          child: ColorPickerCluster(
+                            onColorChange: changeColor,
+                          ),
+                        ),
+                        Expanded(
+                          child: ShadowBoxWithTitle(
+                            title: 'Title',
+                            child: [
+                              Expanded(
+                                child: InputField(
+                                  updateCallBack: (value) {
+                                    setState(() {
+                                      title = value;
+                                    });
+                                  },
+                                  initialValue: '',
+                                ),
                               ),
-                            ),
-                            Expanded(
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 20.0),
+                            child: GestureDetector(
+                              onTap: () async {
+                                await _selectDate(
+                                  context,
+                                  startDate,
+                                  (value) {
+                                    setState(() {
+                                      startDate = value;
+                                    });
+                                  },
+                                );
+                                debugPrint('Start date: $startDate');
+                              },
                               child: ShadowBoxWithTitle(
-                                title: 'Title',
+                                title: 'Start Date',
                                 child: [
                                   Expanded(
-                                    child: InputField(
-                                      updateCallBack: (value) {
-                                        setState(() {
-                                          title = value;
-                                        });
-                                      },
-                                      initialValue: '',
+                                    child: Row(
+                                      children: [
+                                        const Padding(
+                                          padding:
+                                              EdgeInsets.only(right: 10.0),
+                                          child: Icon(
+                                            Icons.calendar_today,
+                                            color: TasklyColor.greyText,
+                                          ),
+                                        ),
+                                        startDate == null
+                                            ? const Text('Select date')
+                                            : Text(DateFormat('dd/MM/yy')
+                                                .format(startDate!)),
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 20.0),
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    await _selectDate(
-                                      context,
-                                      startDate,
-                                      (value) {
-                                        setState(() {
-                                          startDate = value;
-                                        });
-                                      },
-                                    );
-                                    debugPrint('Start date: $startDate');
-                                  },
-                                  child: ShadowBoxWithTitle(
-                                    title: 'Start Date',
-                                    child: [
-                                      Expanded(
-                                        child: Row(
-                                          children: [
-                                            const Padding(
-                                              padding:
-                                                  EdgeInsets.only(right: 10.0),
-                                              child: Icon(
-                                                Icons.calendar_today,
-                                                color: TasklyColor.greyText,
-                                              ),
-                                            ),
-                                            startDate == null
-                                                ? const Text('Select date')
-                                                : Text(DateFormat('dd/MM/yy')
-                                                    .format(startDate!)),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () async {
-                                  await _selectTime(
-                                    context,
-                                    startTime,
-                                    (value) {
-                                      setState(() {
-                                        startTime = value;
-                                      });
-                                    },
-                                  );
-                                  debugPrint('Start time: $startTime');
-                                },
-                                child: ShadowBoxWithTitle(
-                                  title: 'Start Time',
-                                  child: [
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          const Padding(
-                                            padding:
-                                                EdgeInsets.only(right: 10.0),
-                                            child: Icon(
-                                              Icons.calendar_today,
-                                              color: TasklyColor.greyText,
-                                            ),
-                                          ),
-                                          startTime == null
-                                              ? const Text('Select time')
-                                              : Text(DateFormat('hh:mm a')
-                                                  .format(DateTime(
-                                                      2020,
-                                                      1,
-                                                      1,
-                                                      startTime!.hour,
-                                                      startTime!.minute))),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 20.0),
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    await _selectDate(
-                                      context,
-                                      startDate,
-                                      (value) {
-                                        setState(() {
-                                          endDate = value;
-                                        });
-                                      },
-                                    );
-                                    debugPrint('End date: $endDate');
-                                  },
-                                  child: ShadowBoxWithTitle(
-                                    title: 'End Date',
-                                    child: [
-                                      Expanded(
-                                        child: Row(
-                                          children: [
-                                            const Padding(
-                                              padding:
-                                                  EdgeInsets.only(right: 10.0),
-                                              child: Icon(
-                                                Icons.calendar_today,
-                                                color: TasklyColor.greyText,
-                                              ),
-                                            ),
-                                            endDate == null
-                                                ? const Text('Select date')
-                                                : Text(DateFormat('dd/MM/yy')
-                                                    .format(endDate!)),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () async {
-                                  await _selectTime(
-                                    context,
-                                    startTime,
-                                    (value) {
-                                      setState(() {
-                                        endTime = value;
-                                      });
-                                    },
-                                  );
-                                  debugPrint('End time: $endTime');
-                                },
-                                child: ShadowBoxWithTitle(
-                                  title: 'Start Time',
-                                  child: [
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          const Padding(
-                                            padding:
-                                                EdgeInsets.only(right: 10.0),
-                                            child: Icon(
-                                              Icons.calendar_today,
-                                              color: TasklyColor.greyText,
-                                            ),
-                                          ),
-                                          endTime == null
-                                              ? const Text('Select time')
-                                              : Text(DateFormat('hh:mm a')
-                                                  .format(DateTime(
-                                                      2020,
-                                                      1,
-                                                      1,
-                                                      endTime!.hour,
-                                                      endTime!.minute))),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // Padding(
-                      //   padding: EdgeInsets.only(bottom: 20.0),
-                      //   child: Placeholder(
-                      //     child: Text('tags go here'),
-                      //   ),
-                      // ),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              scrollController.jumpTo(
-                                  scrollController.position.maxScrollExtent);
-                            });
-                          },
-                          child: RichEditor(
-                            onUpdateCallBack: (value) {
-                              setState(() {
-                                richDescription = value;
-                              });
-                            },
                           ),
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async {
+                              await _selectTime(
+                                context,
+                                startTime,
+                                (value) {
+                                  setState(() {
+                                    startTime = value;
+                                  });
+                                },
+                              );
+                              debugPrint('Start time: $startTime');
+                            },
+                            child: ShadowBoxWithTitle(
+                              title: 'Start Time',
+                              child: [
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      const Padding(
+                                        padding:
+                                            EdgeInsets.only(right: 10.0),
+                                        child: Icon(
+                                          Icons.calendar_today,
+                                          color: TasklyColor.greyText,
+                                        ),
+                                      ),
+                                      startTime == null
+                                          ? const Text('Select time')
+                                          : Text(DateFormat('hh:mm a')
+                                              .format(DateTime(
+                                                  2020,
+                                                  1,
+                                                  1,
+                                                  startTime!.hour,
+                                                  startTime!.minute))),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 20.0),
+                            child: GestureDetector(
+                              onTap: () async {
+                                await _selectDate(
+                                  context,
+                                  startDate,
+                                  (value) {
+                                    setState(() {
+                                      endDate = value;
+                                    });
+                                  },
+                                );
+                                debugPrint('End date: $endDate');
+                              },
+                              child: ShadowBoxWithTitle(
+                                title: 'End Date',
+                                child: [
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        const Padding(
+                                          padding:
+                                              EdgeInsets.only(right: 10.0),
+                                          child: Icon(
+                                            Icons.calendar_today,
+                                            color: TasklyColor.greyText,
+                                          ),
+                                        ),
+                                        endDate == null
+                                            ? const Text('Select date')
+                                            : Text(DateFormat('dd/MM/yy')
+                                                .format(endDate!)),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async {
+                              await _selectTime(
+                                context,
+                                startTime,
+                                (value) {
+                                  setState(() {
+                                    endTime = value;
+                                  });
+                                },
+                              );
+                              debugPrint('End time: $endTime');
+                            },
+                            child: ShadowBoxWithTitle(
+                              title: 'Start Time',
+                              child: [
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      const Padding(
+                                        padding:
+                                            EdgeInsets.only(right: 10.0),
+                                        child: Icon(
+                                          Icons.calendar_today,
+                                          color: TasklyColor.greyText,
+                                        ),
+                                      ),
+                                      endTime == null
+                                          ? const Text('Select time')
+                                          : Text(DateFormat('hh:mm a')
+                                              .format(DateTime(
+                                                  2020,
+                                                  1,
+                                                  1,
+                                                  endTime!.hour,
+                                                  endTime!.minute))),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Padding(
+                  //   padding: EdgeInsets.only(bottom: 20.0),
+                  //   child: Placeholder(
+                  //     child: Text('tags go here'),
+                  //   ),
+                  // ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          scrollController.jumpTo(
+                              scrollController.position.maxScrollExtent);
+                        });
+                      },
+                      child: RichEditor(
+                        onUpdateCallBack: (value) {
+                          setState(() {
+                            richDescription = value;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
             )),
       ),
