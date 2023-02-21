@@ -1,4 +1,5 @@
 import 'package:calendar_view/calendar_view.dart';
+import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 import 'package:taskly/miscs/dummies.dart';
 import 'package:flutter/material.dart';
 
@@ -15,3 +16,7 @@ String currentChosenDropdownItem = dummyUserTags.first;
 EventController pageController = EventController();
 
 FocusNode focusNode = FocusNode();
+
+MultiSelectController tagSelectionController = MultiSelectController();
+
+ScrollController scrollController = ScrollController();

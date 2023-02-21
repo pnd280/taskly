@@ -45,6 +45,16 @@ class AncestorPageState extends State<AncestorPage> {
         title: 'Taskly',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          timePickerTheme: TimePickerThemeData(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(11),
+            )
+          ),
+          dialogTheme: DialogTheme(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(11),
+            )
+          ),
           fontFamily: 'Inter',
           textSelectionTheme: const TextSelectionThemeData(
             selectionHandleColor: Colors.transparent,
