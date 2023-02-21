@@ -1,4 +1,8 @@
+import 'dart:math';
+import 'dart:developer' as dev;
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:taskly/globals.dart';
 import 'package:taskly/widgets/filter_bar.dart';
 import 'package:taskly/miscs/dummies.dart';
@@ -12,6 +16,9 @@ class TaskOverallViewPage extends StatefulWidget {
 }
 
 class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
+  Set uniqueDays = {};
+  List<List> finalFormattedTasks = [[]];
+
   @override
   Widget build(BuildContext context) {
     final Color primaryColor = Theme.of(context).primaryColor;
@@ -20,6 +27,45 @@ class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
       setState(() {
         currentChosenTag = index;
       });
+    }
+
+    void updateFinalFormattedTasks({required List<List> newFormattedList}) {
+      setState(() {
+        finalFormattedTasks = newFormattedList;
+      });
+    }
+
+    switch (currentChosenTag) {
+      case 0:
+        updateFinalFormattedTasks(
+            newFormattedList: sortByScheduleAt(placeholderTasks));
+        break;
+      case 1:
+        // setState(() {
+        //   finalFormattedTasks = [];
+        // });
+
+        // for testing purpose
+        List<List> emptyList = [
+          [
+            {
+              'id': '1',
+              'title': 'Attend daily standup meeting',
+              'rich_description': 'Discuss progress and blockers with the team',
+              'createdAt': DateTime(2023, 2, 25, 9, 0),
+              'beginAt': null,
+              'endAt': null,
+              'repeat': false,
+              'priority': 1,
+              'isCompleted': false,
+              'projectId': 'work',
+              'isVisible': true,
+            },
+          ]
+        ];
+        updateFinalFormattedTasks(newFormattedList: emptyList);
+        break;
+      default:
     }
 
     void dropdownOnTap(String? value) {
@@ -49,8 +95,22 @@ class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: TaskCluster(
-                        DateTime.now(), anotherDummyTasks, primaryColor),
+                    child: ListView(
+                      children: finalFormattedTasks.isNotEmpty
+                          ? (finalFormattedTasks
+                              .asMap()
+                              .entries
+                              .map(
+                                (entry) => TaskCluster(
+                                    // DateTime.parse(uniqueDays.toList()[entry.key]),
+                                    entry.value[0]['beginAt'] ??
+                                        entry.value[0]['createdAt'],
+                                    entry.value,
+                                    primaryColor),
+                              )
+                              .toList())
+                          : [],
+                    ),
                   ),
                 ),
               ],
@@ -59,5 +119,40 @@ class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
         ],
       ),
     );
+  }
+
+  List<List> sortByScheduleAt(tasks) {
+    for (var task in tasks) {
+      dynamic beginAt = task['beginAt'];
+      if (task['beginAt'] == null) {
+        beginAt = task['createdAt'];
+      }
+      uniqueDays.add(DateFormat('yyyy-MM-dd').format(beginAt));
+    }
+
+    var sortedDay = uniqueDays.toList()..sort((a, b) => a.compareTo(b));
+
+    List<List> ret = [];
+
+    for (var day in sortedDay) {
+      var taskList = [];
+      for (var task in tasks) {
+        dynamic beginAt = task['beginAt'];
+        if (task['beginAt'] == null) {
+          beginAt = task['createdAt'];
+        }
+
+        var formattedBeginAt = DateFormat('yyyy-MM-dd').format(beginAt);
+
+        if (formattedBeginAt == day) {
+          // dev.log(task.toString());
+          if (!task['isVisible']) continue;
+          taskList.add(task);
+        }
+      }
+      ret.add(taskList);
+    }
+
+    return ret;
   }
 }

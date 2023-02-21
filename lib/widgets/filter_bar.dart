@@ -64,17 +64,24 @@ Widget FilterBar(
     child: SizedBox(
       width: double.infinity,
       height: 39,
-      child: ListView.builder(
-        clipBehavior: Clip.none,
-        scrollDirection: Axis.horizontal,
-        itemCount: tags.length + 1,
-        itemBuilder: (BuildContext context, int index) {
-          return GestureDetector(
-              child: (index <= tags.length - 1)
-                  ? Tag(tags[index], primaryColor, index, tagOnTap,
-                      currentChosenTag == index ? true : false)
-                  : DropdownTag(primaryColor));
+      child: RefreshIndicator( 
+        onRefresh: () async {
+          debugPrint('Refresh!!!');
         },
+        child: ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
+          clipBehavior: Clip.none,
+          scrollDirection: Axis.horizontal,
+          itemCount: tags.length + 1,
+          itemBuilder: (BuildContext context, int index) {
+            return GestureDetector(
+                // onTap: tagOnTap,
+                child: (index <= tags.length - 1)
+                    ? Tag(tags[index], primaryColor, index, tagOnTap,
+                        currentChosenTag == index ? true : false)
+                    : DropdownTag(primaryColor));
+          },
+        ),
       ),
     ),
   );

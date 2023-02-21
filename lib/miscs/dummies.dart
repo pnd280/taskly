@@ -11,14 +11,14 @@ DateTime generateRandomTime() {
   return time;
 }
 
-final List<Map<String, dynamic>> dummyTasks = [
+List<Map<String, dynamic>> dummyTasks = [
   {
     'id': '1',
     'title': 'Attend daily standup meeting',
     'rich_description': 'Discuss progress and blockers with the team',
-    'createdAt': DateTime.now(),
-    'beginAt': DateTime(2023, 2, 19, 9, 0),
-    'endAt': DateTime(2023, 2, 19, 9, 30),
+    'createdAt': DateTime(2023, 2, 25, 9, 0),
+    'beginAt': null,
+    'endAt': null,
     'repeat': false,
     'priority': 1,
     'isCompleted': false,
@@ -29,8 +29,8 @@ final List<Map<String, dynamic>> dummyTasks = [
     'id': '2',
     'title': 'Complete coding tasks',
     'rich_description': 'Finish coding tasks assigned for the day',
-    'createdAt': DateTime.now(),
-    'beginAt': DateTime(2023, 2, 19, 10, 0),
+    'createdAt': DateTime(2023, 3, 1, 10, 0),
+    'beginAt': null,
     'endAt': DateTime(2023, 2, 19, 12, 0),
     'repeat': false,
     'priority': 2,
@@ -81,8 +81,8 @@ final List<Map<String, dynamic>> dummyTasks = [
     'id': '6',
     'title': 'Pick up groceries',
     'rich_description': 'Buy ingredients for dinner',
-    'createdAt': DateTime.now(),
-    'beginAt': DateTime(2023, 2, 19, 18, 0),
+    'createdAt': DateTime(2023, 2, 19, 18, 0),
+    'beginAt': null,
     'endAt': DateTime(2023, 2, 19, 19, 0),
     'repeat': false,
     'priority': 6,
@@ -144,7 +144,7 @@ final List<Map<String, dynamic>> dummyTasks = [
   },
 ];
 
-final List<Map<String, dynamic>> anotherDummyTasks = [
+List<Map<String, dynamic>> anotherDummyTasks = [
   {
     'id': '1',
     'title': 'Prepare for project meeting',
@@ -283,6 +283,12 @@ final List<Map<String, dynamic>> anotherDummyTasks = [
     'isVisible': true,
   },
 ];
+
+List<Map<String, dynamic>> placeholderTasks = [
+  ...dummyTasks,
+  ...anotherDummyTasks,
+];
+
 
 final List dummyTags = [
   'All',

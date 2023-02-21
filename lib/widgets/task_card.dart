@@ -4,37 +4,28 @@ import 'package:taskly/miscs/colors.dart';
 import 'package:intl/intl.dart';
 
 Widget TaskCluster(
-  DateTime dateTime,
-  List<Map> tasks,
+  DateTime? dateTime,
+  List tasks,
   Color borderColor,
 ) {
   // Sort tasks based on priority key
   tasks.sort((a, b) => a['priority'].compareTo(b['priority']));
 
-  return ListView(
-    // clipBehavior: Clip.none,
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              DateFormat("EEE, MMM d").format(dateTime),
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          ...(tasks.map((e) => TaskCard(e, borderColor)).toList()),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              DateFormat("EEE, MMM d").format(dateTime),
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          ...(tasks.map((e) => TaskCard(e, borderColor)).toList())
-        ],
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: dateTime == null
+            ? const Text('No date')
+            : Text(
+                DateFormat("EEE, MMM d").format(dateTime),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
       ),
+      ...(tasks.map((e) => TaskCard(e, borderColor)).toList()),
     ],
   );
 }
@@ -83,17 +74,19 @@ Widget TaskCard(Map task, Color borderColor) {
             padding: const EdgeInsets.only(right: 10.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Icon(
-                  CupertinoIcons.clock,
-                  size: 18,
-                ),
-                Text(
-                  TimeOfDay.fromDateTime(task['beginAt'])
-                      .toString()
-                      .substring(10, 15),
-                )
-              ],
+              children: task['beginAt'] == null
+                  ? []
+                  : [
+                      const Icon(
+                        CupertinoIcons.clock,
+                        size: 18,
+                      ),
+                      Text(
+                        TimeOfDay.fromDateTime(task['beginAt'])
+                            .toString()
+                            .substring(10, 15),
+                      ),
+                    ],
             ),
           )
         ],
