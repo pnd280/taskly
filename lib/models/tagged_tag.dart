@@ -1,3 +1,4 @@
+import 'dart:convert';
 class Tagged{
   String tagId;
   String taskId;
@@ -12,5 +13,11 @@ class Tagged{
       map['tagId'],
       map['taskId'],
     );
+  }
+  String toJson() => json.encode(toMap());
+  factory Tagged.fromJson(String source) => Tagged.fromMap(json.decode(source));
+  @override
+  String toString() {
+    return 'Tagged(tagId: $tagId, taskId: $taskId)';
   }
 }

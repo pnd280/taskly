@@ -26,4 +26,11 @@ class Tag {
       map['isVisible'],
     );
   }
+  String toJson() => json.encode(toMap());
+  factory Tag.fromJson(String source) => Tag.fromMap(json.decode(source));
+  @override
+  String toString() {
+    return 'Tag(id: $id, title: $title, color: $color, isVisible: $isVisible)';
+  }
+  
 }

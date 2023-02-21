@@ -1,3 +1,4 @@
+import 'dart:convert';
 class Repeat_Task{
   String id; 
   String taskId;
@@ -21,5 +22,11 @@ class Repeat_Task{
       map['nextDueDate'],
       map['interval'],
     );
+  }
+  String toJson() => json.encode(toMap());
+  factory Repeat_Task.fromJson(String source) => Repeat_Task.fromMap(json.decode(source));
+  @override
+  String toString() {
+    return 'Repeat_Task(id: $id, taskId: $taskId, weekDay: $weekDay, nextDueDate: $nextDueDate, interval: $interval)';
   }
 }

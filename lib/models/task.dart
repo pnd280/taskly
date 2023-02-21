@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:floor/floor.dart';
-
+import 'dart:convert';
 
 class Task { 
   //set primary key for id
@@ -46,4 +46,11 @@ class Task {
       map['isVisible'],
     );
   }
+  String toJson() => json.encode(toMap());
+  factory Task.fromJson(String source) => Task.fromMap(json.decode(source));
+  @override
+  String toString() {
+    return 'Task(id: $id, title: $title, rich_description: $rich_description, createdAt: $createdAt, beginAt: $beginAt, endAt: $endAt, repeat: $repeat, priority: $priority, isCompleted: $isCompleted, projectId: $projectId, isVisible: $isVisible)';
+  }
 }
+

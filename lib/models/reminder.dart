@@ -23,5 +23,12 @@ class Reminder {
       map['time'],
     );
   }
+  String toJson() => json.encode(toMap());
+  factory Reminder.fromJson(String source) => Reminder.fromMap(json.decode(source));
+  @override
+  String toString() {
+    return 'Reminder(id: $id, taskId: $taskId, time: $time)';
+  }
+  
   
 }

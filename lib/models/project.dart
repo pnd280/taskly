@@ -30,4 +30,10 @@ class Project {
       map['isVisible'],
     );
   }
+  String toJson() => json.encode(toMap());
+  factory Project.fromJson(String source) => Project.fromMap(json.decode(source));
+  @override
+  String toString() {
+    return 'Project(id: $id, title: $title, description: $description, createdAt: $createdAt, isVisible: $isVisible)';
+  }
 }
