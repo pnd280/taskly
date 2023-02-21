@@ -3,9 +3,9 @@ import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:taskly/db_test.dart';
 import 'package:taskly/globals.dart';
 import 'package:taskly/miscs/colors.dart';
+import 'package:taskly/miscs/filter_utils.dart';
 import 'package:taskly/widgets/filter_bar.dart';
 import 'package:taskly/miscs/dummies.dart';
 import 'package:taskly/widgets/task_card.dart';
@@ -18,9 +18,6 @@ class TaskOverallViewPage extends StatefulWidget {
 }
 
 class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
-  Set uniqueDays = {};
-  List<List> finalFormattedTasks = [[]];
-
   @override
   Widget build(BuildContext context) {
     final Color primaryColor = Theme.of(context).primaryColor;
@@ -38,39 +35,20 @@ class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
     }
 
     switch (currentChosenTag) {
-      case 0:
-        updateFinalFormattedTasks(
-            newFormattedList: sortByScheduleAt(placeholderTasks));
-        break;
-      case 1:
-        // setState(() {
-        //   finalFormattedTasks = [];
-        // });
-
-        // for testing purpose
-        List<List> emptyList = [
-          [
-            {
-              'id': '1',
-              'title': 'Attend daily standup meeting',
-              'rich_description': 'Discuss progress and blockers with the team',
-              'createdAt': DateTime(2023, 2, 25, 9, 0),
-              'beginAt': null,
-              'endAt': null,
-              'repeat': false,
-              'priority': 1,
-              'isCompleted': false,
-              'projectId': 'work',
-              'isVisible': true,
-            },
-          ]
-        ];
-        updateFinalFormattedTasks(newFormattedList: emptyList);
-        break;
       case 2:
-        dbHelper();
+        updateFinalFormattedTasks(
+          newFormattedList: filterTasks(
+            tasks: placeholderTasks,
+            sortType: 2,
+            showCompleted: true,
+          ),
+        );
         break;
       default:
+        updateFinalFormattedTasks(
+            newFormattedList: filterTasks(
+                tasks: placeholderTasks, sortType: currentChosenTag));
+        break;
     }
 
     void dropdownOnTap(String? value) {
@@ -105,18 +83,19 @@ class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: ListView(
                         children: finalFormattedTasks.isNotEmpty
-                            ? (finalFormattedTasks
-                                .asMap()
-                                .entries
-                                .map(
-                                  (entry) => TaskCluster(
+                            ? (finalFormattedTasks.asMap().entries.map(
+                                (entry) {
+                                  if (entry.value.isEmpty) {
+                                    return Container();
+                                  }
+                                  return TaskCluster(
                                       // DateTime.parse(uniqueDays.toList()[entry.key]),
                                       entry.value[0]['beginAt'] ??
                                           entry.value[0]['createdAt'],
                                       entry.value,
-                                      primaryColor),
-                                )
-                                .toList())
+                                      primaryColor);
+                                },
+                              ).toList())
                             : [],
                       ),
                     ),
@@ -128,40 +107,5 @@ class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
         ),
       ),
     );
-  }
-
-  List<List> sortByScheduleAt(tasks) {
-    for (var task in tasks) {
-      dynamic beginAt = task['beginAt'];
-      if (task['beginAt'] == null) {
-        beginAt = task['createdAt'];
-      }
-      uniqueDays.add(DateFormat('yyyy-MM-dd').format(beginAt));
-    }
-
-    var sortedDay = uniqueDays.toList()..sort((a, b) => a.compareTo(b));
-
-    List<List> ret = [];
-
-    for (var day in sortedDay) {
-      var taskList = [];
-      for (var task in tasks) {
-        dynamic beginAt = task['beginAt'];
-        if (task['beginAt'] == null) {
-          beginAt = task['createdAt'];
-        }
-
-        var formattedBeginAt = DateFormat('yyyy-MM-dd').format(beginAt);
-
-        if (formattedBeginAt == day) {
-          // dev.log(task.toString());
-          if (!task['isVisible']) continue;
-          taskList.add(task);
-        }
-      }
-      ret.add(taskList);
-    }
-
-    return ret;
   }
 }

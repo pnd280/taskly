@@ -64,7 +64,7 @@ Widget FilterBar(
     child: SizedBox(
       width: double.infinity,
       height: 39,
-      child: RefreshIndicator( 
+      child: RefreshIndicator(
         onRefresh: () async {
           debugPrint('Refresh!!!');
         },

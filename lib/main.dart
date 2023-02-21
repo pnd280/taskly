@@ -46,15 +46,13 @@ class AncestorPageState extends State<AncestorPage> {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           timePickerTheme: TimePickerThemeData(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(11),
-            )
-          ),
+              shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(11),
+          )),
           dialogTheme: DialogTheme(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(11),
-            )
-          ),
+              shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(11),
+          )),
           fontFamily: 'Inter',
           textSelectionTheme: const TextSelectionThemeData(
             selectionHandleColor: Colors.transparent,
@@ -164,13 +162,18 @@ class RootPageState extends State<RootPage> {
               child: [1].contains(currentNavPage)
                   ? IconButton(
                       splashRadius: 20,
-                      icon: Icon((currentCalendarView == 1
-                          ? CupertinoIcons.calendar
-                          : Icons.view_timeline_rounded)),
+                      icon: Icon(
+                        (currentCalendarView == 1
+                            ? Icons.calendar_view_day_outlined
+                            : (currentCalendarView == 2
+                                ? Icons.calendar_view_week
+                                : CupertinoIcons.calendar)),
+                      ),
                       onPressed: () {
                         setState(() {
-                          currentCalendarView =
-                              currentCalendarView == 0 ? 1 : 0;
+                          currentCalendarView = currentCalendarView == 0
+                              ? 1
+                              : (currentCalendarView == 1 ? 2 : 0);
                         });
                       },
                     )
