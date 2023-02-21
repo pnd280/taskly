@@ -16,7 +16,7 @@ Widget Tag(String title, Color primaryColor, int index, setState,
           borderRadius: BorderRadius.circular(11),
           gradient: isSelected
               ? TasklyGradient.purpleBackground
-              : TasklyGradient.lightBackground,
+              : TasklyGradient.completeWhite,
           border: Border.all(color: TasklyColor.blackText.withOpacity(.1)),
         ),
         child: Padding(

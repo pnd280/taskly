@@ -18,7 +18,7 @@ Widget FilterBar(
         borderRadius: BorderRadius.circular(11),
         gradient: (currentChosenTag < 0)
             ? TasklyGradient.purpleBackground
-            : TasklyGradient.lightBackground,
+            : TasklyGradient.completeWhite,
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(

@@ -4,6 +4,7 @@ import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:taskly/globals.dart';
+import 'package:taskly/miscs/colors.dart';
 import 'package:taskly/widgets/filter_bar.dart';
 import 'package:taskly/miscs/dummies.dart';
 import 'package:taskly/widgets/task_card.dart';
@@ -77,46 +78,50 @@ class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.black.withOpacity(.05),
-      body: Column(
-        children: [
-          FilterBar(
-              tags: dummyTags,
-              userTags: dummyUserTags,
-              currentChosenTag: currentChosenTag,
-              currentChosenDropdownItem: currentChosenDropdownItem,
-              dropdownOnTap: dropdownOnTap,
-              primaryColor: primaryColor,
-              tagOnTap: tagOnTap),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListView(
-                      children: finalFormattedTasks.isNotEmpty
-                          ? (finalFormattedTasks
-                              .asMap()
-                              .entries
-                              .map(
-                                (entry) => TaskCluster(
-                                    // DateTime.parse(uniqueDays.toList()[entry.key]),
-                                    entry.value[0]['beginAt'] ??
-                                        entry.value[0]['createdAt'],
-                                    entry.value,
-                                    primaryColor),
-                              )
-                              .toList())
-                          : [],
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: TasklyGradient.lightBackground,
+        ),
+        child: Column(
+          children: [
+            FilterBar(
+                tags: dummyTags,
+                userTags: dummyUserTags,
+                currentChosenTag: currentChosenTag,
+                currentChosenDropdownItem: currentChosenDropdownItem,
+                dropdownOnTap: dropdownOnTap,
+                primaryColor: primaryColor,
+                tagOnTap: tagOnTap),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListView(
+                        children: finalFormattedTasks.isNotEmpty
+                            ? (finalFormattedTasks
+                                .asMap()
+                                .entries
+                                .map(
+                                  (entry) => TaskCluster(
+                                      // DateTime.parse(uniqueDays.toList()[entry.key]),
+                                      entry.value[0]['beginAt'] ??
+                                          entry.value[0]['createdAt'],
+                                      entry.value,
+                                      primaryColor),
+                                )
+                                .toList())
+                            : [],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

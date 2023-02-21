@@ -158,8 +158,7 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                                     child: Row(
                                       children: [
                                         const Padding(
-                                          padding:
-                                              EdgeInsets.only(right: 10.0),
+                                          padding: EdgeInsets.only(right: 10.0),
                                           child: Icon(
                                             Icons.calendar_today,
                                             color: TasklyColor.greyText,
@@ -198,8 +197,7 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                                   child: Row(
                                     children: [
                                       const Padding(
-                                        padding:
-                                            EdgeInsets.only(right: 10.0),
+                                        padding: EdgeInsets.only(right: 10.0),
                                         child: Icon(
                                           Icons.calendar_today,
                                           color: TasklyColor.greyText,
@@ -207,8 +205,8 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                                       ),
                                       startTime == null
                                           ? const Text('Select time')
-                                          : Text(DateFormat('hh:mm a')
-                                              .format(DateTime(
+                                          : Text(DateFormat('hh:mm a').format(
+                                              DateTime(
                                                   2020,
                                                   1,
                                                   1,
@@ -252,8 +250,7 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                                     child: Row(
                                       children: [
                                         const Padding(
-                                          padding:
-                                              EdgeInsets.only(right: 10.0),
+                                          padding: EdgeInsets.only(right: 10.0),
                                           child: Icon(
                                             Icons.calendar_today,
                                             color: TasklyColor.greyText,
@@ -292,8 +289,7 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                                   child: Row(
                                     children: [
                                       const Padding(
-                                        padding:
-                                            EdgeInsets.only(right: 10.0),
+                                        padding: EdgeInsets.only(right: 10.0),
                                         child: Icon(
                                           Icons.calendar_today,
                                           color: TasklyColor.greyText,
@@ -301,8 +297,8 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                                       ),
                                       endTime == null
                                           ? const Text('Select time')
-                                          : Text(DateFormat('hh:mm a')
-                                              .format(DateTime(
+                                          : Text(DateFormat('hh:mm a').format(
+                                              DateTime(
                                                   2020,
                                                   1,
                                                   1,
