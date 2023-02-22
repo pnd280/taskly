@@ -7,6 +7,7 @@ import 'package:taskly/pages/calendar_view.dart';
 import 'package:taskly/pages/overlay.dart';
 import 'package:taskly/pages/settings.dart';
 import 'package:taskly/pages/task_create.dart';
+import 'package:taskly/pages/task_editor.dart';
 import 'package:taskly/pages/task_overall_view.dart';
 import 'package:taskly/miscs/colors.dart';
 
@@ -202,7 +203,7 @@ class RootPageState extends State<RootPage> {
       body: [0, 2].contains(currentNavPage)
           ? pages[currentNavPage]
           : loadCalendarView(currentCalendarView),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: [0, 1].contains(currentNavPage)
           ? Container(
               decoration: BoxDecoration(
@@ -213,7 +214,29 @@ class RootPageState extends State<RootPage> {
               ),
               child: FloatingActionButton(
                 onPressed: () {
-                  widget.showTaskCreatePageCallBack();
+                  // widget.showTaskCreatePageCallBack();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return TaskEditorPage(
+                          // task: {
+                          //   'id': '1',
+                          //   'title': 'Prepare for project meeting',
+                          //   'rich_description':
+                          //       'Review project goals, prepare slides and talking points for team meeting',
+                          //   'createdAt': DateTime(2023, 2, 20, 8, 0),
+                          //   'beginAt': null,
+                          //   'endAt': null,
+                          //   'repeat': false,
+                          //   'priority': 10,
+                          //   'isCompleted': false,
+                          //   'projectId': 'work',
+                          //   'isVisible': true,
+                          // },
+                        );
+                      },
+                    ),
+                  );
                 },
                 child: const Icon(
                   CupertinoIcons.add,
@@ -243,10 +266,10 @@ class RootPageState extends State<RootPage> {
                 icon: Icon(CupertinoIcons.calendar),
                 label: 'Calendar',
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: 'Settings',
-              ),
+              // BottomNavigationBarItem(
+              //   icon: Icon(Icons.settings),
+              //   label: 'Settings',
+              // ),
             ],
             onTap: (int index) {
               setState(() {

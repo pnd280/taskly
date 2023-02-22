@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
@@ -8,19 +10,23 @@ import 'package:taskly/globals.dart';
 import 'package:taskly/miscs/colors.dart';
 import 'package:taskly/miscs/dummies.dart';
 import 'package:taskly/miscs/styles.dart';
+import 'package:taskly/miscs/utils.dart';
+import 'package:taskly/pages/task_overall_view.dart';
 import 'package:taskly/widgets/color_picker.dart';
 import 'package:taskly/widgets/custom_snackbar.dart';
 import 'package:taskly/widgets/date_picker.dart';
 import 'package:taskly/widgets/rich_editor.dart';
+import 'package:uuid/uuid.dart';
+import 'dart:developer';
 
 import '../widgets/custom_text_field.dart';
 
 class TaskEditorPage extends StatefulWidget {
-  bool isNewTask;
+  Map? task;
 
   TaskEditorPage({
     super.key,
-    this.isNewTask = true,
+    this.task,
   });
 
   @override
@@ -36,17 +42,47 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
   TimeOfDay? startTime;
   TimeOfDay? endTime;
 
-  String richDescription = '';
+  String? richDescription;
 
   Color pickerColor = TasklyColor.VeriPeri;
   Color currentColor = TasklyColor.VeriPeri;
 
+  void changeColor(Color color) {
+    setState(() => pickerColor = color);
+  }
+
+  bool inputEnabled = true;
+
+  void changeToEditingMode() {
+    setState(() {
+      title = null;
+      inputEnabled = true;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.task != null) {
+      print('widget.task = ${widget.task}');
+
+      title = widget.task!['title'];
+      startDate = widget.task!['beginAt'];
+      endDate = widget.task!['endAt'];
+      startTime = widget.task!['beginAt'] != null
+          ? TimeOfDay.fromDateTime(widget.task!['beginAt'])
+          : null;
+      endTime = widget.task!['endAt'] != null
+          ? TimeOfDay.fromDateTime(widget.task!['endAt'])
+          : null;
+
+      richDescription = widget.task!['rich_description'];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    void changeColor(Color color) {
-      setState(() => pickerColor = color);
-    }
-
     return GestureDetector(
       onTap: () {
         focusNode.unfocus();
@@ -56,43 +92,250 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
         child: Scaffold(
             appBar: AppBar(
               actions: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
-                  child: IconButton(
-                    splashRadius: 25,
-                    onPressed: () {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        scrollController
-                            .jumpTo(scrollController.position.maxScrollExtent);
-                      });
-                    },
-                    icon: const Icon(
-                      CupertinoIcons.trash,
-                    ),
-                  ),
-                ),
+                widget.task != null
+                    ? Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: IconButton(
+                          splashRadius: 25,
+                          onPressed: () {
+                            showCupertinoDialog(
+                              context: context,
+                              builder: (context) {
+                                return CupertinoAlertDialog(
+                                  content: Container(
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  title: const Text('Delete this task?'),
+                                  actions: [
+                                    CupertinoDialogAction(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('Cancel'),
+                                    ),
+                                    CupertinoDialogAction(
+                                      onPressed: () {
+                                        placeholderTasks.removeWhere((task) =>
+                                            task['id'] == widget.task!['id']);
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).pop();
+                                        forceRedrawCb_();
+                                      },
+                                      child: const Text('Delete'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(
+                            CupertinoIcons.trash,
+                          ),
+                        ),
+                      )
+                    : Container(),
+                // widget.task == null
+                // ?
                 IconButton(
                   splashRadius: 25,
                   onPressed: () {
-                    Map _task = {
-                      'color': currentColor,
-                      'title': title,
-                      'startDate': startDate,
-                      'startTime': startTime,
-                      'endDate': endDate,
-                      'endTime': endTime,
-                      'rich_description': richDescription
-                    };
-                    debugPrint('Map Contents:');
-                    _task.forEach((key, value) {
-                      debugPrint('$key: $value');
-                    });
+                    if (widget.task == null) {
+                      if (title == null || title!.isEmpty) {
+                        showCupertinoDialog(
+                          context: context,
+                          builder: (context) {
+                            return CupertinoAlertDialog(
+                              content: Container(
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              title: const Text('Please enter a title'),
+                              actions: [
+                                CupertinoDialogAction(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                        return;
+                      }
+
+                      // check start date and time and end date and time, if start date and time is after end date and time, then show a dialog
+                      if (startDate != null &&
+                          endDate != null &&
+                          startTime != null &&
+                          endTime != null) {
+                        if (joinDateTimeAndTimeOfDay(startDate!, startTime!)
+                                .isAfter(joinDateTimeAndTimeOfDay(
+                                    endDate!, endTime!)) ||
+                            joinDateTimeAndTimeOfDay(startDate!, startTime!) ==
+                                joinDateTimeAndTimeOfDay(endDate!, endTime!)) {
+                          showCupertinoDialog(
+                            context: context,
+                            builder: (context) {
+                              return CupertinoAlertDialog(
+                                content: Container(
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                title: const Text('Invalid time range'),
+                                actions: [
+                                  CupertinoDialogAction(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                          return;
+                        }
+                      }
+
+                      Map<String, dynamic> task = {
+                        // ignore: prefer_const_constructors
+                        'id': Uuid(),
+                        'title': title != null && title!.isNotEmpty
+                            ? title
+                            : 'Untitled',
+                        'rich_description': richDescription ?? '',
+                        'createdAt': DateTime.now(),
+                        'beginAt':
+                            joinDateTimeAndTimeOfDay(startDate, startTime),
+                        'endAt': joinDateTimeAndTimeOfDay(endDate, endTime),
+                        'isCompleted': false,
+                        'isVisible': true,
+                        // 'color': currentColor.value.toRadixString(16).padLeft(8, '0'),
+                        // 'startDate': startDate,
+                        // 'startTime': startTime,
+                        // 'endDate': endDate,
+                        // 'endTime': endTime,
+                      };
+
+                      // log(json.encode(_task));
+                      // log(Color(int.parse('ff8672ef', radix: 16)).toString());
+
+                      placeholderTasks.add(task);
+
+                      Navigator.of(context).pop();
+
+                      forceRedrawCb_();
+                      return;
+                    }
+
+                    // if any of the fields are changed from the initial value, then prompt user to save changes by showing a cupertino dialog
+                    if (title != widget.task!['title'] ||
+                        richDescription != widget.task!['rich_description'] ||
+                        startDate != widget.task!['beginAt'] ||
+                        endDate != widget.task!['endAt'] ||
+                        startTime !=
+                            TimeOfDay.fromDateTime(widget.task!['beginAt']) ||
+                        endTime !=
+                            TimeOfDay.fromDateTime(widget.task!['endAt'])) {
+                      showCupertinoDialog(
+                        context: context,
+                        builder: (context) {
+                          return CupertinoAlertDialog(
+                            content: Container(
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                              ),
+                            ),
+                            title: const Text('Save changes?'),
+                            actions: [
+                              CupertinoDialogAction(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Cancel'),
+                              ),
+                              CupertinoDialogAction(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Discard'),
+                              ),
+                              CupertinoDialogAction(
+                                onPressed: () {
+                                  if (startDate != null && startTime == null) {
+                                    startTime =
+                                        const TimeOfDay(hour: 0, minute: 0);
+                                  }
+
+                                  if (endDate != null && endTime == null) {
+                                    endTime =
+                                        const TimeOfDay(hour: 0, minute: 0);
+                                  }
+
+                                  Map<String, dynamic> updatedTask = {
+                                    // list all the fields that can be changed
+                                    'id': widget.task!['id'],
+                                    'title': title != null && title!.isNotEmpty
+                                        ? title
+                                        : 'Untitled',
+                                    'rich_description': richDescription ?? '',
+                                    'createdAt': widget.task!['createdAt'],
+                                    'beginAt':
+                                        startDate != null && startTime != null
+                                            ? joinDateTimeAndTimeOfDay(
+                                                startDate, startTime)
+                                            : null,
+                                    'endAt': endDate != null && endTime != null
+                                        ? joinDateTimeAndTimeOfDay(
+                                            endDate, endTime)
+                                        : null,
+                                    'isCompleted': widget.task!['isCompleted'],
+                                    'isVisible': widget.task!['isVisible'],
+                                  };
+
+                                  // log updatedTask
+                                  log((updatedTask).toString());
+
+                                  int taskIndex = placeholderTasks.indexWhere(
+                                      (t) => t['id'] == widget.task!['id']);
+                                  if (taskIndex != -1) {
+                                    placeholderTasks[taskIndex] = updatedTask;
+                                  }
+
+                                  log('task updated!');
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                  forceRedrawCb_();
+                                },
+                                child: const Text('Save'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                      return;
+                    }
+
+                    log('no changes made');
                     Navigator.of(context).pop();
                   },
                   icon: const Icon(
                     CupertinoIcons.checkmark_alt,
                   ),
                 )
+                // : IconButton(
+                //     splashRadius: 25,
+                //     onPressed: () {
+                //       changeToEditingMode();
+                //     },
+                //     icon: const Icon(Icons.edit),
+                //   )
               ],
             ),
             body: Padding(
@@ -104,12 +347,12 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 20.0),
-                          child: ColorPickerCluster(
-                            onColorChange: changeColor,
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(right: 20.0),
+                        //   child: ColorPickerCluster(
+                        //     onColorChange: changeColor,
+                        //   ),
+                        // ),
                         Expanded(
                           child: ShadowBoxWithTitle(
                             title: 'Title',
@@ -121,7 +364,8 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                                       title = value;
                                     });
                                   },
-                                  initialValue: '',
+                                  initialValue: title,
+                                  enabled: inputEnabled,
                                 ),
                               ),
                             ],
@@ -140,6 +384,7 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                             padding: const EdgeInsets.only(right: 20.0),
                             child: GestureDetector(
                               onTap: () async {
+                                if (inputEnabled != true) return;
                                 await _selectDate(
                                   context,
                                   startDate,
@@ -148,6 +393,7 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                                       startDate = value;
                                     });
                                   },
+                                  startDate ?? DateTime.now(),
                                 );
                                 debugPrint('Start date: $startDate');
                               },
@@ -179,6 +425,8 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                         Expanded(
                           child: GestureDetector(
                             onTap: () async {
+                              if (inputEnabled != true) return;
+
                               await _selectTime(
                                 context,
                                 startTime,
@@ -232,9 +480,10 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                             padding: const EdgeInsets.only(right: 20.0),
                             child: GestureDetector(
                               onTap: () async {
+                                if (inputEnabled != true) return;
                                 await _selectDate(
                                   context,
-                                  startDate,
+                                  endDate ?? startDate,
                                   (value) {
                                     setState(() {
                                       endDate = value;
@@ -271,9 +520,11 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                         Expanded(
                           child: GestureDetector(
                             onTap: () async {
+                              if (inputEnabled != true) return;
+
                               await _selectTime(
                                 context,
-                                startTime,
+                                endTime ?? startTime,
                                 (value) {
                                   setState(() {
                                     endTime = value;
@@ -329,12 +580,14 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                         });
                       },
                       child: RichEditor(
-                        onUpdateCallBack: (value) {
-                          setState(() {
-                            richDescription = value;
-                          });
-                        },
-                      ),
+                          onUpdateCallBack: (value) {
+                            setState(() {
+                              richDescription = value;
+                            });
+                          },
+                          context: context,
+                          enable: true,
+                          text: richDescription),
                     ),
                   ),
                 ],
@@ -434,11 +687,12 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
   }
 
   Future<void> _selectDate(
-      BuildContext context, DateTime? selectedDate, onUpdateCallback) async {
+      BuildContext context, DateTime? selectedDate, onUpdateCallback,
+      [DateTime? firstDate]) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate ?? DateTime.now(),
-        firstDate: DateTime(2010),
+        firstDate: firstDate ?? DateTime(2010),
         lastDate: DateTime(2030));
     if (picked != null) {
       onUpdateCallback(picked);

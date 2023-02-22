@@ -20,6 +20,29 @@ class TaskOverallViewPage extends StatefulWidget {
 class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
   @override
   Widget build(BuildContext context) {
+    void forceRedraw() {
+      late var newFormattedList;
+
+      switch (currentChosenTag) {
+        case 2:
+          newFormattedList = filterTasks(
+            tasks: placeholderTasks,
+            sortType: 2,
+            showCompleted: true,
+          );
+          break;
+        default:
+          newFormattedList =
+              filterTasks(tasks: placeholderTasks, sortType: currentChosenTag);
+          break;
+      }
+      setState(() {
+        finalFormattedTasks = newFormattedList;
+      });
+    }
+
+    forceRedrawCb_ = forceRedraw;
+
     final Color primaryColor = Theme.of(context).primaryColor;
 
     void tagOnTap(int index) {
@@ -82,7 +105,8 @@ class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ListView(
-                        children: finalFormattedTasks.isNotEmpty
+                        children: finalFormattedTasks.isNotEmpty &&
+                                finalFormattedTasks[0].isNotEmpty
                             ? (finalFormattedTasks.asMap().entries.map(
                                 (entry) {
                                   if (entry.value.isEmpty) {
@@ -93,10 +117,25 @@ class _TaskOverallViewPageState extends State<TaskOverallViewPage> {
                                       entry.value[0]['beginAt'] ??
                                           entry.value[0]['createdAt'],
                                       entry.value,
-                                      primaryColor);
+                                      primaryColor,
+                                      context,
+                                      forceRedraw);
                                 },
                               ).toList())
-                            : [],
+                            : [
+                                Container(
+                                  height:
+                                      MediaQuery.of(context).size.height / 2,
+                                  child: const Center(
+                                      child: Text(
+                                    'No tasks found!',
+                                    style: TextStyle(
+                                      // fontWeight: FontWeight.bold,
+                                      fontSize: 23,
+                                    ),
+                                  )),
+                                ),
+                              ],
                       ),
                     ),
                   ),

@@ -19,4 +19,17 @@ FocusNode focusNode = FocusNode();
 
 MultiSelectController tagSelectionController = MultiSelectController();
 
+List<List> finalFormattedTasks = [];
+
 ScrollController scrollController = ScrollController();
+
+Set uniqueDays = {};
+
+EventController calendarController = EventController();
+
+List<Map<String, dynamic>> placeholderTasks = [
+  // ...dummyTasks,
+  // ...anotherDummyTasks,
+];
+
+Function forceRedrawCb_ = () {};

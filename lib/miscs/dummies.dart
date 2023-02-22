@@ -14,7 +14,7 @@ List<Map<String, dynamic>> dummyTasks = [
   {
     'id': '1',
     'title': 'Attend daily standup meeting',
-    'rich_description': 'Discuss progress and blockers with the team',
+    'rich_description': '<p>Discuss progress and blockers with the team</p>',
     'createdAt': DateTime(2023, 2, 25, 9, 0),
     'beginAt': null,
     'endAt': null,
@@ -27,7 +27,7 @@ List<Map<String, dynamic>> dummyTasks = [
   {
     'id': '2',
     'title': 'Complete coding tasks',
-    'rich_description': 'Finish coding tasks assigned for the day',
+    'rich_description': '<p>Finish coding tasks assigned for the day</p>',
     'createdAt': DateTime(2023, 3, 1, 10, 0),
     'beginAt': null,
     'endAt': null,
@@ -40,7 +40,7 @@ List<Map<String, dynamic>> dummyTasks = [
   {
     'id': '3',
     'title': 'Take a lunch break',
-    'rich_description': 'Have a healthy and energizing meal',
+    'rich_description': '<p>Have a healthy and energizing meal</p>',
     'createdAt': DateTime(2023, 2, 19, 12, 0),
     'beginAt': null,
     'endAt': null,
@@ -53,7 +53,7 @@ List<Map<String, dynamic>> dummyTasks = [
   {
     'id': '4',
     'title': 'Attend a meeting',
-    'rich_description': 'Discuss project details with clients',
+    'rich_description': '<p>Discuss project details with clients</p>',
     'createdAt': DateTime.now(),
     'beginAt': null,
     'endAt': null,
@@ -66,7 +66,7 @@ List<Map<String, dynamic>> dummyTasks = [
   {
     'id': '5',
     'title': 'Study for a certification',
-    'rich_description': 'Spend at least an hour reading study materials',
+    'rich_description': '<p>Spend at least an hour reading study materials</p>',
     'createdAt': DateTime.now(),
     'beginAt': DateTime.now(),
     'endAt': DateTime.now().add(Duration(hours: 1)),
@@ -79,7 +79,7 @@ List<Map<String, dynamic>> dummyTasks = [
   {
     'id': '6',
     'title': 'Pick up groceries',
-    'rich_description': 'Buy ingredients for dinner',
+    'rich_description': '<p>Buy ingredients for dinner</p>',
     'createdAt': DateTime(2023, 2, 25, 18, 0),
     'beginAt': null,
     'endAt': null,
@@ -92,7 +92,7 @@ List<Map<String, dynamic>> dummyTasks = [
   {
     'id': '7',
     'title': 'Cook dinner',
-    'rich_description': 'Prepare and cook a healthy meal',
+    'rich_description': '<p>Prepare and cook a healthy meal</p>',
     'createdAt': DateTime.now(),
     'beginAt': DateTime(2023, 2, 19, 19, 0),
     'endAt': DateTime(2023, 2, 19, 20, 0),
@@ -105,7 +105,7 @@ List<Map<String, dynamic>> dummyTasks = [
   // {
   //   'id': '8',
   //   'title': 'Read a book',
-  //   'rich_description': 'Spend time reading a book of your choice',
+  //   'rich_description': '<p>Spend time reading a book of your choice</p>',
   //   'createdAt': DateTime.now(),
   //   'beginAt': DateTime(2023, 2, 19, 21, 0),
   //   'endAt': DateTime(2023, 2, 19, 22, 0),
@@ -118,7 +118,7 @@ List<Map<String, dynamic>> dummyTasks = [
   // {
   //   'id': '9',
   //   'title': 'Meditate',
-  //   'rich_description': 'Spend some time meditating and relaxing',
+  //   'rich_description': '<p>Spend some time meditating and relaxing</p>',
   //   'createdAt': DateTime.now(),
   //   'beginAt': DateTime(2023, 2, 19, 22, 0),
   //   'endAt': DateTime(2023, 2, 19, 22, 30),
@@ -131,7 +131,7 @@ List<Map<String, dynamic>> dummyTasks = [
   // {
   //   'id': '10',
   //   'title': 'Go to bed',
-  //   'rich_description': 'Get a good night\'s sleep to prepare for tomorrow',
+  //   'rich_description': '<p>Get a good night\'s sleep to prepare for tomorrow</p>',
   //   'createdAt': DateTime.now(),
   //   'beginAt': DateTime(2023, 2, 19, 23, 0),
   //   'endAt': DateTime(2023, 2, 20, 7, 0),
@@ -148,7 +148,7 @@ List<Map<String, dynamic>> anotherDummyTasks = [
     'id': '1',
     'title': 'Prepare for project meeting',
     'rich_description':
-        'Review project goals, prepare slides and talking points for team meeting',
+        '<p>Review project goals, prepare slides and talking points for team meeting</p>',
     'createdAt': DateTime(2023, 2, 20, 8, 0),
     'beginAt': DateTime(2023, 2, 20, 8, 0),
     'endAt': DateTime(2023, 2, 20, 8, 0),
@@ -162,9 +162,9 @@ List<Map<String, dynamic>> anotherDummyTasks = [
     'id': '2',
     'title': 'Attend project meeting',
     'rich_description':
-        'Participate in project meeting, provide updates and discuss any issues',
+        '<p>Participate in project meeting, provide updates and discuss any issues</p>',
     'createdAt': DateTime(2023, 2, 20, 10, 0),
-    'beginAt': null,
+    'beginAt': DateTime(2023, 2, 20, 10, 0),
     'endAt': null,
     'repeat': false,
     'priority': 2,
@@ -189,7 +189,7 @@ List<Map<String, dynamic>> anotherDummyTasks = [
   // {
   //   'id': '4',
   //   'title': 'Lunch break',
-  //   'rich_description': 'Take a break to eat and recharge',
+  //   'rich_description': '<p>Take a break to eat and recharge</p>',
   //   'createdAt': DateTime.now(),
   //   'beginAt': DateTime(2023, 2, 20, 12, 0),
   //   'endAt': DateTime(2023, 2, 20, 13, 0),
@@ -244,7 +244,7 @@ List<Map<String, dynamic>> anotherDummyTasks = [
   // {
   //   'id': '8',
   //   'title': 'Prepare dinner',
-  //   'rich_description': 'Plan and prepare a healthy dinner for oneself',
+  //   'rich_description': '<p>Plan and prepare a healthy dinner for oneself</p>',
   //   'createdAt': DateTime.now(),
   //   'beginAt': DateTime(2023, 2, 20, 18, 0),
   //   'endAt': DateTime(2023, 2, 20, 19, 0),
@@ -257,7 +257,7 @@ List<Map<String, dynamic>> anotherDummyTasks = [
   // {
   //   'id': '9',
   //   'title': 'Watch a movie',
-  //   'rich_description': 'Relax by watching a movie or TV show',
+  //   'rich_description': '<p>Relax by watching a movie or TV show</p>',
   //   'createdAt': DateTime.now(),
   //   'beginAt': DateTime(2023, 2, 20, 20, 0),
   //   'endAt': DateTime(2023, 2, 20, 22, 0),
@@ -281,11 +281,6 @@ List<Map<String, dynamic>> anotherDummyTasks = [
   //   'projectId': 'personal',
   //   'isVisible': true,
   // },
-];
-
-List<Map<String, dynamic>> placeholderTasks = [
-  ...dummyTasks,
-  ...anotherDummyTasks,
 ];
 
 final List dummyTags = [

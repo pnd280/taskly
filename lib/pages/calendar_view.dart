@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:taskly/globals.dart';
 import 'package:taskly/miscs/colors.dart';
 import 'package:taskly/miscs/dummies.dart';
 import 'package:taskly/miscs/filter_utils.dart';
+import 'package:taskly/miscs/styles.dart';
 import 'package:taskly/miscs/utils.dart';
+import 'package:taskly/pages/task_editor.dart';
 import 'package:taskly/widgets/filter_bar.dart';
 import 'dart:developer';
 
@@ -18,6 +23,8 @@ class CalendarViewPage extends StatefulWidget {
 }
 
 class _CalendarViewPageState extends State<CalendarViewPage> {
+  DateTime currentCalendarPage = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     final Color primaryColor = Theme.of(context).primaryColor;
@@ -69,12 +76,18 @@ class _CalendarViewPageState extends State<CalendarViewPage> {
     // load event to calendar
     for (var tasks in finalFormattedTasks) {
       for (var task in tasks) {
+        // create a map<string, string> that contains all the task info
+        // and convert it to a string
+
         final event = CalendarEventData(
           title: task['title'],
           date: task['beginAt'] ?? task['createdAt'],
           endDate: task['endAt'],
           startTime: task['beginAt'] ?? task['createdAt'],
           endTime: task['endAt'],
+          description: task['rich_description'] != null
+              ? removeHtmlTags(task['rich_description'])
+              : '',
         );
         // calendarController.add(event);
         CalendarControllerProvider.of(context).controller.add(event);
@@ -111,6 +124,12 @@ class _CalendarViewPageState extends State<CalendarViewPage> {
       case 0:
         return MonthView(
           // controller: calendarController,
+          initialMonth: currentCalendarPage,
+          onPageChange: (date, page) {
+            setState(() {
+              currentCalendarPage = date;
+            });
+          },
           key: calendarMonthViewKey,
           showBorder: false,
           weekDayBuilder: (day) {
@@ -136,25 +155,189 @@ class _CalendarViewPageState extends State<CalendarViewPage> {
           },
           onCellTap: (events, date) {},
           onEventTap: (event, date) {
-            print(event.title);
-            print(date);
+            // Navigator.of(context)
+            //     .push(MaterialPageRoute(builder: (buildContext) {
+            //   return TaskEditorPage(
+            //     task: json.decode(event.description),
+            //   );
+            // }));
+
+            // show a dialog that contains the task title and rich description
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text(event.title),
+                  content: Text(event.description),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Close'),
+                    ),
+                  ],
+                );
+              },
+            );
           },
         );
       case 1:
         return DayView(
+          initialDay: currentCalendarPage,
+          onPageChange: (date, page) {
+            setState(() {
+              currentCalendarPage = date;
+            });
+          },
           key: calendarDayViewKey,
           heightPerMinute: 1,
-          // fullDayEventBuilder: (events, date) {
-          //   return Container(
-          //     decoration: BoxDecoration(
-          //       color: Colors.blue,
-          //     ),
-          //   );
-          // },
+          eventTileBuilder:
+              (date, events, boundary, startDuration, endDuration) {
+            // maintain the same design but change the background color to TasklyColor.VeriPeri
+            return Container(
+              decoration: const BoxDecoration(
+                color: TasklyColor.VeriPeri,
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+              ),
+              child: Column(
+                children: [
+                  for (var event in events)
+                    Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            color: TasklyColor.VeriPeri,
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            boxShadow: [TasklyStyle.shadow]),
+                        child: ListTile(
+                          title: Text(
+                            event.title,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          subtitle: Text(
+                            event.description,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            );
+          },
+          onEventTap: (events, date) {
+            // Navigator.of(context)
+            //     .push(MaterialPageRoute(builder: (buildContext) {
+            //   return TaskEditorPage(
+            //     task: json.decode(event.description),
+            //   );
+            // }));
+
+            // show a dialog that contains the task title and rich description
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text(events[0].title),
+                  content: Text(events[0].description),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Close'),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
         );
       case 2:
         return WeekView(
+          eventTileBuilder:
+              (date, events, boundary, startDuration, endDuration) {
+            // maintain the same design but change the background color to TasklyColor.VeriPeri
+            return Container(
+              decoration: const BoxDecoration(
+                color: TasklyColor.VeriPeri,
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+              ),
+              child: Column(
+                children: [
+                  for (var event in events)
+                    Expanded(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                            color: TasklyColor.VeriPeri,
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            boxShadow: [TasklyStyle.shadow]),
+                        child: ListTile(
+                          title: Text(
+                            event.title,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          subtitle: Text(
+                            event.description,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            );
+          },
           key: calendarWeekViewKey,
+          initialDay: currentCalendarPage,
+          onPageChange: (date, page) {
+            setState(() {
+              currentCalendarPage = date;
+            });
+          },
+          onEventTap: (events, date) {
+            // Navigator.of(context)
+            //     .push(MaterialPageRoute(builder: (buildContext) {
+            //   return TaskEditorPage(
+            //     task: json.decode(event.description),
+            //   );
+            // }));
+
+            // show a dialog that contains the task title and rich description
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text(events[0].title),
+                  content: Text(events[0].description),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Close'),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
         );
       default:
         return const MonthView();
