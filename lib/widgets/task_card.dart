@@ -85,7 +85,7 @@ Widget TaskCard(Map task, Color borderColor, context) {
                                   Icons.circle_outlined,
                                   color: TasklyColor.VeriPeri,
                                 ),
-                          onPressed: () {
+                          onPressed: () async {
                             // if (task['isCompleted']) {
                             //   return;
                             // }
@@ -94,7 +94,7 @@ Widget TaskCard(Map task, Color borderColor, context) {
                                     (element) => element['id'] == task['id'])]
                                 ['isCompleted'] = !task['isCompleted'];
                             log('${task['title']} -> mark as completed');
-                            forceRedrawCb_();
+                            await forceRedrawCb_();
                           }),
                     ), // checkbox
                     Text(

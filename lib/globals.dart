@@ -1,7 +1,10 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taskly/miscs/dummies.dart';
 import 'package:flutter/material.dart';
+import 'package:taskly/miscs/utils.dart';
+import 'dart:developer';
 
 int currentNavPage = 0;
 
@@ -27,9 +30,9 @@ Set uniqueDays = {};
 
 EventController calendarController = EventController();
 
-List<Map<String, dynamic>> placeholderTasks = [
-  // ...dummyTasks,
-  // ...anotherDummyTasks,
-];
+var _temp = log('globals');
+
+List placeholderTasks = [];
 
 Function forceRedrawCb_ = () {};
+

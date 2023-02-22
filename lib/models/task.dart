@@ -1,17 +1,19 @@
-class Task {
+import 'package:uuid/uuid.dart';
+
+class TaskModel {
   String id;
   String title;
   String richDescription;
   DateTime createdAt;
   DateTime beginAt;
-  DateTime endAt;
+  dynamic endAt;
   bool repeat;
   int priority;
   bool isCompleted;
-  String projectId;
+  String? projectId;
   bool isVisible;
 
-  Task({
+  TaskModel({
     required this.id,
     required this.title,
     required this.richDescription,
@@ -21,18 +23,18 @@ class Task {
     this.repeat = false,
     this.priority = 4,
     this.isCompleted = false,
-    required this.projectId,
+    this.projectId,
     this.isVisible = true,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      'id': id.toString(),
       'title': title,
       'rich_description': richDescription,
       'createdAt': createdAt.toIso8601String(),
       'beginAt': beginAt.toIso8601String(),
-      'endAt': endAt.toIso8601String(),
+      'endAt': endAt != null ? endAt.toIso8601String() : null,
       'repeat': repeat ? 1 : 0,
       'priority': priority,
       'isCompleted': isCompleted ? 1 : 0,
@@ -41,9 +43,9 @@ class Task {
     };
   }
 
-  static Task fromMap(Map<String, dynamic> map) {
-    return Task(
-      id: map['id'],
+  static TaskModel fromMap(Map<String, dynamic> map) {
+    return TaskModel(
+      id: Uuid.unparse(Uuid.parse(map['id'])),
       title: map['title'],
       richDescription: map['rich_description'],
       createdAt: DateTime.parse(map['createdAt']),

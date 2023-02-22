@@ -6,11 +6,14 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:intl/intl.dart';
+import 'package:taskly/db_helper.dart';
+import 'package:taskly/db_utils.dart';
 import 'package:taskly/globals.dart';
 import 'package:taskly/miscs/colors.dart';
 import 'package:taskly/miscs/dummies.dart';
 import 'package:taskly/miscs/styles.dart';
 import 'package:taskly/miscs/utils.dart';
+import 'package:taskly/models/task.dart';
 import 'package:taskly/pages/task_overall_view.dart';
 import 'package:taskly/widgets/color_picker.dart';
 import 'package:taskly/widgets/custom_snackbar.dart';
@@ -116,12 +119,12 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                                       child: const Text('Cancel'),
                                     ),
                                     CupertinoDialogAction(
-                                      onPressed: () {
+                                      onPressed: () async {
                                         placeholderTasks.removeWhere((task) =>
                                             task['id'] == widget.task!['id']);
                                         Navigator.of(context).pop();
                                         Navigator.of(context).pop();
-                                        forceRedrawCb_();
+                                        await forceRedrawCb_();
                                       },
                                       child: const Text('Delete'),
                                     ),
@@ -140,7 +143,7 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                 // ?
                 IconButton(
                   splashRadius: 25,
-                  onPressed: () {
+                  onPressed: () async {
                     if (widget.task == null) {
                       if (title == null || title!.isEmpty) {
                         showCupertinoDialog(
@@ -204,7 +207,7 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
 
                       Map<String, dynamic> task = {
                         // ignore: prefer_const_constructors
-                        'id': Uuid(),
+                        'id': new Uuid(),
                         'title': title != null && title!.isNotEmpty
                             ? title
                             : 'Untitled',
@@ -216,20 +219,35 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                         'isCompleted': false,
                         'isVisible': true,
                         // 'color': currentColor.value.toRadixString(16).padLeft(8, '0'),
-                        // 'startDate': startDate,
-                        // 'startTime': startTime,
-                        // 'endDate': endDate,
-                        // 'endTime': endTime,
                       };
 
                       // log(json.encode(_task));
                       // log(Color(int.parse('ff8672ef', radix: 16)).toString());
 
+                      var newUuid = Uuid().v4();
+
+                      TaskModel newTask = TaskModel(
+                        // ignore: prefer_const_constructors
+                        id: newUuid.toString(),
+                        title: title != null && title!.isNotEmpty
+                            ? title!
+                            : 'Untitled',
+                        richDescription: richDescription ?? '',
+                        createdAt: DateTime.now(),
+                        beginAt: startDate != null && startTime != null ?
+                            joinDateTimeAndTimeOfDay(startDate, startTime) : DateTime.now(),
+                        endAt: joinDateTimeAndTimeOfDay(endDate, endTime),
+                        isCompleted: false,
+                        isVisible: true,
+                      );
+
+                      await TaskDatabaseHelper.insertTask(newTask);
+
                       placeholderTasks.add(task);
 
                       Navigator.of(context).pop();
 
-                      forceRedrawCb_();
+                      await forceRedrawCb_();
                       return;
                     }
 
@@ -267,7 +285,7 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                                 child: const Text('Discard'),
                               ),
                               CupertinoDialogAction(
-                                onPressed: () {
+                                onPressed: () async {
                                   if (startDate != null && startTime == null) {
                                     startTime =
                                         const TimeOfDay(hour: 0, minute: 0);
@@ -311,7 +329,7 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
                                   log('task updated!');
                                   Navigator.of(context).pop();
                                   Navigator.of(context).pop();
-                                  forceRedrawCb_();
+                                  await forceRedrawCb_();
                                 },
                                 child: const Text('Save'),
                               ),

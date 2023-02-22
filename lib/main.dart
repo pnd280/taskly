@@ -1,8 +1,14 @@
+import 'dart:developer';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:taskly/db_helper.dart';
+import 'package:taskly/db_utils.dart';
 import 'package:taskly/globals.dart';
 import 'package:taskly/miscs/styles.dart';
+import 'package:taskly/miscs/utils.dart';
 import 'package:taskly/pages/calendar_view.dart';
 import 'package:taskly/pages/overlay.dart';
 import 'package:taskly/pages/settings.dart';
@@ -188,7 +194,39 @@ class RootPageState extends State<RootPage> {
                       icon: const Icon(
                         CupertinoIcons.search,
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        var allTasks = await TaskDatabaseHelper.getAllTasks();
+                        log(allTasks.toString());
+
+                        log('forced!!!!!!!');
+                        placeholderTasks =
+                            await TaskDatabaseHelper.getAllTasks();
+                        log(placeholderTasks.toString());
+
+                        // convert beginAt, endAt, createdAt to DateTime
+                        placeholderTasks = placeholderTasks.map((e) {
+                          e['beginAt'] = e['beginAt'] != null
+                              ? DateTime.parse(e['beginAt'])
+                              : null;
+                          e['endAt'] = e['endAt'] != null
+                              ? DateTime.parse(e['endAt'])
+                              : null;
+                          e['createdAt'] = e['createdAt'] != null
+                              ? DateTime.parse(e['createdAt'])
+                              : null;
+                          return e;
+                        }).toList();
+
+                        // await TaskDatabaseHelper.deleteAllTasks();
+
+                        // final db = await openDatabase('app.db');
+
+                        // // close the database before deleting the file
+                        // await db.close();
+
+                        // // delete the database file
+                        // await deleteDatabase('app.db');
+                      },
                     )
                   : IconButton(
                       key: const Key('profile-icon'),
@@ -219,21 +257,21 @@ class RootPageState extends State<RootPage> {
                     MaterialPageRoute(
                       builder: (BuildContext context) {
                         return TaskEditorPage(
-                          // task: {
-                          //   'id': '1',
-                          //   'title': 'Prepare for project meeting',
-                          //   'rich_description':
-                          //       'Review project goals, prepare slides and talking points for team meeting',
-                          //   'createdAt': DateTime(2023, 2, 20, 8, 0),
-                          //   'beginAt': null,
-                          //   'endAt': null,
-                          //   'repeat': false,
-                          //   'priority': 10,
-                          //   'isCompleted': false,
-                          //   'projectId': 'work',
-                          //   'isVisible': true,
-                          // },
-                        );
+                            // task: {
+                            //   'id': '1',
+                            //   'title': 'Prepare for project meeting',
+                            //   'rich_description':
+                            //       'Review project goals, prepare slides and talking points for team meeting',
+                            //   'createdAt': DateTime(2023, 2, 20, 8, 0),
+                            //   'beginAt': null,
+                            //   'endAt': null,
+                            //   'repeat': false,
+                            //   'priority': 10,
+                            //   'isCompleted': false,
+                            //   'projectId': 'work',
+                            //   'isVisible': true,
+                            // },
+                            );
                       },
                     ),
                   );

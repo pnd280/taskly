@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:html_unescape/html_unescape.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:taskly/globals.dart';
 
 String intToWeekDay(int day) {
@@ -53,3 +56,4 @@ String removeHtmlTags(String htmlString) {
 // void deleteTask(String taskId) {
 //   placeholderTasks.removeWhere((task) => task['id'] == taskId);
 // }
+
