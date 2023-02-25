@@ -8,6 +8,8 @@ import 'package:taskly/miscs/colors.dart';
 import 'package:intl/intl.dart';
 import 'package:taskly/pages/task_editor.dart';
 
+import 'group_task_card.dart';
+
 Widget TaskCluster(
   DateTime? dateTime,
   List tasks,
@@ -32,7 +34,7 @@ Widget TaskCluster(
                 ),
               ),
       ),
-      ...(tasks.map((e) => TaskCard(e, borderColor, parentContext)).toList()),
+      ...(tasks.map((e) => e['isGroupTask'] != null ? GroupTaskCard(task: e,) : TaskCard(e, borderColor, parentContext)).toList()),
     ],
   );
 }
@@ -111,18 +113,14 @@ Widget TaskCard(Map task, Color borderColor, context) {
                         ),
                         task['projectId'] != null
                             ? Row(
-                                children: [
-                                  const Icon(
-                                    CupertinoIcons.tags_solid,
-                                    size: 15,
-                                    color: TasklyColor.VeriPeri,
-                                  ),
-                                  Text(
+                              children: [
+                                const Icon(CupertinoIcons.tags_solid, size: 15, color: TasklyColor.VeriPeri,),
+                                Text(
                                     task['projectId'],
                                     style: const TextStyle(),
                                   ),
-                                ],
-                              )
+                              ],
+                            )
                             : Container(),
                       ],
                     ),
