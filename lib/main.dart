@@ -203,7 +203,7 @@ class RootPageState extends State<RootPage> {
       body: [0, 2].contains(currentNavPage)
           ? pages[currentNavPage]
           : loadCalendarView(currentCalendarView),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: [0, 1].contains(currentNavPage)
           ? Container(
               decoration: BoxDecoration(
@@ -266,10 +266,10 @@ class RootPageState extends State<RootPage> {
                 icon: Icon(CupertinoIcons.calendar),
                 label: 'Calendar',
               ),
-              // BottomNavigationBarItem(
-              //   icon: Icon(Icons.settings),
-              //   label: 'Settings',
-              // ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.settings),
+                label: 'Settings',
+              ),
             ],
             onTap: (int index) {
               setState(() {

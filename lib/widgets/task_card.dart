@@ -101,9 +101,30 @@ Widget TaskCard(Map task, Color borderColor, context) {
                             forceRedrawCb_();
                           }),
                     ), // checkbox
-                    Text(
-                      task['title'],
-                      style: const TextStyle(),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          task['title'],
+                          style: const TextStyle(),
+                        ),
+                        task['projectId'] != null
+                            ? Row(
+                                children: [
+                                  const Icon(
+                                    CupertinoIcons.tags_solid,
+                                    size: 15,
+                                    color: TasklyColor.VeriPeri,
+                                  ),
+                                  Text(
+                                    task['projectId'],
+                                    style: const TextStyle(),
+                                  ),
+                                ],
+                              )
+                            : Container(),
+                      ],
                     ),
                   ],
                 ),
