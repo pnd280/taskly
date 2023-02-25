@@ -1,8 +1,9 @@
 CREATE TABLE `Task` (
   `id` text PRIMARY KEY,
   `title` text,
-  `rich_description` text COMMENT 'JSON/MD format',
+  `richDescription` text COMMENT 'JSON/MD format',
   `createdAt` datetime,
+  `updatedAt` datetime,
   `beginAt` datetime,
   `endAt` datetime,
   `repeat` boolean DEFAULT false,
@@ -35,9 +36,8 @@ CREATE TABLE `TaggedTask` (
 CREATE TABLE `RepeatedTask` (
   `id` text PRIMARY KEY,
   `taskId` text,
-  `interval` int,
-  `weekDay` text COMMENT 'An array, weekdays separated by comma',
-  `nextDueDate` datetime COMMENT 'When the task is completed, update this field'
+  `repeatType` text,
+  `interval` int
 );
 
 CREATE TABLE `Reminder` (

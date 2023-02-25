@@ -1,8 +1,9 @@
 Table Task {
   id text [pk]
   title text
-  rich_description text [note: 'JSON/MD format']
+  richDescription text [note: 'JSON/MD format']
   createdAt datetime
+  updatedAt datetime
   beginAt datetime
   endAt datetime
   repeat boolean [default: false]
@@ -35,9 +36,8 @@ Table TaggedTask {
 Table RepeatedTask {
   id text [pk]
   taskId text [ref: - Task.id]
+  repeatType text
   interval int
-  weekDay text [note: 'An array, weekdays separated by comma']
-  nextDueDate datetime [note: 'When the task is completed, update this field']
 }
 
 Table Reminder {
