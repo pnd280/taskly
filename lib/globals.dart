@@ -28,8 +28,8 @@ Set uniqueDays = {};
 EventController calendarController = EventController();
 
 List<Map<String, dynamic>> placeholderTasks = [
-  // ...dummyTasks,
-  // ...anotherDummyTasks,
+  ...dummyTasks,
+  ...anotherDummyTasks,
 ];
 
 Function forceRedrawCb_ = () {};

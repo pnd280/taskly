@@ -36,11 +36,14 @@ List<List> filterTasks({
       var formattedBeginAt = DateFormat('yyyy-MM-dd').format(beginAt);
 
       if (formattedBeginAt == day) {
+
         if (showCompleted) {
           if (!task['isCompleted']) continue;
         } else {
           if (!task['isVisible'] || task['isCompleted']) continue;
         }
+
+
         switch (sortType) {
           case 1: // in progress
             if (DateTime.now().difference(beginAt).inDays != 0) continue;

@@ -93,7 +93,11 @@ Widget TaskCard(Map task, Color borderColor, context) {
                             placeholderTasks[placeholderTasks.indexWhere(
                                     (element) => element['id'] == task['id'])]
                                 ['isCompleted'] = !task['isCompleted'];
-                            log('${task['title']} -> mark as completed');
+                            // debug all tasks completion/uncompletion
+                            log(placeholderTasks
+                                .map((e) => e['id'])
+                                .toList()
+                                .toString());
                             forceRedrawCb_();
                           }),
                     ), // checkbox

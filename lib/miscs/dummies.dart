@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:uuid/uuid.dart';
+
 DateTime generateRandomTime() {
   final random = Random();
   final now = DateTime.now();
@@ -12,7 +14,7 @@ DateTime generateRandomTime() {
 
 List<Map<String, dynamic>> dummyTasks = [
   {
-    'id': '1',
+    'id': Uuid().v4().toString(),
     'title': 'Attend daily standup meeting',
     'rich_description': '<p>Discuss progress and blockers with the team</p>',
     'createdAt': DateTime(2023, 2, 25, 9, 0),
@@ -25,7 +27,7 @@ List<Map<String, dynamic>> dummyTasks = [
     'isVisible': true,
   },
   {
-    'id': '2',
+    'id': Uuid().v4().toString(),
     'title': 'Complete coding tasks',
     'rich_description': '<p>Finish coding tasks assigned for the day</p>',
     'createdAt': DateTime(2023, 3, 1, 10, 0),
@@ -33,12 +35,12 @@ List<Map<String, dynamic>> dummyTasks = [
     'endAt': null,
     'repeat': false,
     'priority': 2,
-    'isCompleted': true,
+    'isCompleted': false,
     'projectId': 'work',
     'isVisible': true,
   },
   {
-    'id': '3',
+    'id': Uuid().v4().toString(),
     'title': 'Take a lunch break',
     'rich_description': '<p>Have a healthy and energizing meal</p>',
     'createdAt': DateTime(2023, 2, 19, 12, 0),
@@ -46,12 +48,12 @@ List<Map<String, dynamic>> dummyTasks = [
     'endAt': null,
     'repeat': false,
     'priority': 3,
-    'isCompleted': true,
+    'isCompleted': false,
     'projectId': 'personal',
     'isVisible': true,
   },
   {
-    'id': '4',
+    'id': Uuid().v4().toString(),
     'title': 'Attend a meeting',
     'rich_description': '<p>Discuss project details with clients</p>',
     'createdAt': DateTime.now(),
@@ -64,7 +66,7 @@ List<Map<String, dynamic>> dummyTasks = [
     'isVisible': true,
   },
   {
-    'id': '5',
+    'id': Uuid().v4().toString(),
     'title': 'Study for a certification',
     'rich_description': '<p>Spend at least an hour reading study materials</p>',
     'createdAt': DateTime.now(),
@@ -77,7 +79,7 @@ List<Map<String, dynamic>> dummyTasks = [
     'isVisible': true,
   },
   {
-    'id': '6',
+    'id': Uuid().v4().toString(),
     'title': 'Pick up groceries',
     'rich_description': '<p>Buy ingredients for dinner</p>',
     'createdAt': DateTime(2023, 2, 25, 18, 0),
@@ -90,7 +92,7 @@ List<Map<String, dynamic>> dummyTasks = [
     'isVisible': true,
   },
   {
-    'id': '7',
+    'id': Uuid().v4().toString(),
     'title': 'Cook dinner',
     'rich_description': '<p>Prepare and cook a healthy meal</p>',
     'createdAt': DateTime.now(),
@@ -103,7 +105,7 @@ List<Map<String, dynamic>> dummyTasks = [
     'isVisible': true,
   },
   // {
-  //   'id': '8',
+  //   'id': Uuid().v4().toString(),
   //   'title': 'Read a book',
   //   'rich_description': '<p>Spend time reading a book of your choice</p>',
   //   'createdAt': DateTime.now(),
@@ -116,7 +118,7 @@ List<Map<String, dynamic>> dummyTasks = [
   //   'isVisible': true,
   // },
   // {
-  //   'id': '9',
+  //   'id': Uuid().v4().toString(),
   //   'title': 'Meditate',
   //   'rich_description': '<p>Spend some time meditating and relaxing</p>',
   //   'createdAt': DateTime.now(),
@@ -129,7 +131,7 @@ List<Map<String, dynamic>> dummyTasks = [
   //   'isVisible': true,
   // },
   // {
-  //   'id': '10',
+  //   'id': Uuid().v4().toString()',
   //   'title': 'Go to bed',
   //   'rich_description': '<p>Get a good night\'s sleep to prepare for tomorrow</p>',
   //   'createdAt': DateTime.now(),
@@ -145,7 +147,7 @@ List<Map<String, dynamic>> dummyTasks = [
 
 List<Map<String, dynamic>> anotherDummyTasks = [
   {
-    'id': '1',
+    'id': Uuid().v4().toString(),
     'title': 'Prepare for project meeting',
     'rich_description':
         '<p>Review project goals, prepare slides and talking points for team meeting</p>',
@@ -159,7 +161,7 @@ List<Map<String, dynamic>> anotherDummyTasks = [
     'isVisible': true,
   },
   {
-    'id': '2',
+    'id': Uuid().v4().toString(),
     'title': 'Attend project meeting',
     'rich_description':
         '<p>Participate in project meeting, provide updates and discuss any issues</p>',
@@ -173,7 +175,7 @@ List<Map<String, dynamic>> anotherDummyTasks = [
     'isVisible': true,
   },
   // {
-  //   'id': '3',
+  //   'id': Uuid().v4().toString(),
   //   'title': 'Reply to important emails',
   //   'rich_description':
   //       'Check email and respond to important messages from clients and team members',
@@ -187,7 +189,7 @@ List<Map<String, dynamic>> anotherDummyTasks = [
   //   'isVisible': true,
   // },
   // {
-  //   'id': '4',
+  //   'id': Uuid().v4().toString(),
   //   'title': 'Lunch break',
   //   'rich_description': '<p>Take a break to eat and recharge</p>',
   //   'createdAt': DateTime.now(),
@@ -200,7 +202,7 @@ List<Map<String, dynamic>> anotherDummyTasks = [
   //   'isVisible': true,
   // },
   // {
-  //   'id': '5',
+  //   'id': Uuid().v4().toString(),
   //   'title': 'Attend team brainstorming session',
   //   'rich_description':
   //       'Participate in a brainstorming session with team members to generate new ideas for a project',
@@ -214,7 +216,7 @@ List<Map<String, dynamic>> anotherDummyTasks = [
   //   'isVisible': true,
   // },
   // {
-  //   'id': '6',
+  //   'id': Uuid().v4().toString(),
   //   'title': 'Gym workout',
   //   'rich_description':
   //       'Hit the gym for a workout session to maintain good health',
@@ -228,7 +230,7 @@ List<Map<String, dynamic>> anotherDummyTasks = [
   //   'isVisible': true
   // },
   // {
-  //   'id': '7',
+  //   'id': Uuid().v4().toString(),
   //   'title': 'Read a chapter of a book',
   //   'rich_description':
   //       'Spend some time reading a chapter of a book to gain knowledge and unwind',
@@ -242,7 +244,7 @@ List<Map<String, dynamic>> anotherDummyTasks = [
   //   'isVisible': true,
   // },
   // {
-  //   'id': '8',
+  //   'id': Uuid().v4().toString(),
   //   'title': 'Prepare dinner',
   //   'rich_description': '<p>Plan and prepare a healthy dinner for oneself</p>',
   //   'createdAt': DateTime.now(),
@@ -255,7 +257,7 @@ List<Map<String, dynamic>> anotherDummyTasks = [
   //   'isVisible': true,
   // },
   // {
-  //   'id': '9',
+  //   'id': Uuid().v4().toString(),
   //   'title': 'Watch a movie',
   //   'rich_description': '<p>Relax by watching a movie or TV show</p>',
   //   'createdAt': DateTime.now(),
@@ -268,7 +270,7 @@ List<Map<String, dynamic>> anotherDummyTasks = [
   //   'isVisible': true,
   // },
   // {
-  //   'id': '10',
+  //   'id': Uuid().v4().toString()',
   //   'title': 'Prepare for the next day',
   //   'rich_description':
   //       'Check calendar and to-do list, plan out tasks for the next day',

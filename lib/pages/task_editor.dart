@@ -204,7 +204,7 @@ class _TaskEditorPageState extends State<TaskEditorPage> {
 
                       Map<String, dynamic> task = {
                         // ignore: prefer_const_constructors
-                        'id': Uuid(),
+                        'id': Uuid().v4().toString(),
                         'title': title != null && title!.isNotEmpty
                             ? title
                             : 'Untitled',
