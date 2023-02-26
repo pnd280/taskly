@@ -12,7 +12,7 @@
 
 # Taskly UI Preview
 ## Overall view
-![Overall view](https://raw.githubusercontent.com/pnd280/taskly/master/imgs/task-overall-view%20(Small).png?raw=true)
+![Overall view](https://raw.githubusercontent.com/pnd280/taskly/master/imgs/task-overall-view.png?raw=true)
 
 ## Calendar view  
 ![Calendar view](https://raw.githubusercontent.com/pnd280/taskly/master/imgs/calendar-view%20(Small).png?raw=true) 
